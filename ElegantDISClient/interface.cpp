@@ -57,7 +57,7 @@ void interface::handle_topic_update(QVariant topic_name, QVariant topic_data) {
     std::string tmp_topic_name = topic_name.value<QString>().toStdString();
     double tmp_topic_data = string_to_num<double>(topic_data.value<QString>().toStdString());
     subscribe_topic_map_[tmp_topic_name] = tmp_topic_data;
-    if (++syn_topic_count_ == subscribe_topic_map_.size()) { 
+    if (++syn_topic_count_ == subscribe_topic_map_.size()) {  // 当所有订阅的话题都被更新后向管理节点发布同步完成指令
         std::string cmd = "synpubover\r\n";
         syn_topic_count_ = 0;
         pubsubclient_->send(cmd);

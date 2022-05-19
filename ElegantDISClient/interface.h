@@ -51,7 +51,7 @@ private:
     std::map<std::string, double> subscribe_topic_map_;
     std::map<std::string, double> publish_topic_map_;
 
-    std::size_t syn_topic_count_;
+    std::size_t syn_topic_count_; // 记录每一步仿真中已经更新的订阅话题数量
 };
 
 #endif // INTERFACE_H

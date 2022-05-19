@@ -72,7 +72,7 @@ void Hub::handle_step_sig() {
 
 void Hub::handle_synpub_sig() {
     node_synpub_over_count_++;
-    if (node_synpub_over_count_ == pubsubserver_->server_->connections_.size()) {
+    if (node_synpub_over_count_ == pubsubserver_->server_->connections_.size()) { // 所有节点完成话题更新
         node_step_over_count_ = 0; // 清零，准备计算下一步完成仿真的节点数量（同步）
         node_synpub_over_count_ = 0;
         step_cmd(); // 下一步仿真指令
