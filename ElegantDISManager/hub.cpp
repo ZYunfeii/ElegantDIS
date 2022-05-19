@@ -7,6 +7,7 @@ Hub::Hub(QWidget *parent)
     , thread_(new QThread())
     , pubsubserver_(new pubsub::PubSubServer)
     , node_step_over_count_(0)
+    , node_synpub_over_count_(0)
     , total_sim_steps_(0)
     , max_sim_steps_(10)
 {
@@ -21,6 +22,7 @@ Hub::Hub(QWidget *parent)
     connect(this->pubsubserver_, &pubsub::PubSubServer::update_topic_sig, this, &Hub::update_topic_show);
     connect(ui->start_sim_button, &QPushButton::clicked, this, &Hub::step_cmd);
     connect(this->pubsubserver_, &pubsub::PubSubServer::step_over_sig, this, &Hub::handle_step_sig); // todo
+    connect(this->pubsubserver_, &pubsub::PubSubServer::synpub_over_sig, this, &Hub::handle_synpub_sig);
 
     // tree view init
     tree_model_ = std::make_shared<QStandardItemModel>(this);
@@ -61,8 +63,19 @@ void Hub::handle_step_sig() {
     // todo
     node_step_over_count_++;
     if (node_step_over_count_ == pubsubserver_->server_->connections_.size()) { // 说明所有节点完成一步仿真
-        step_cmd(); // 下一步仿真指令
+        for (auto it = pubsubserver_->server_->connections_.begin(); it != pubsubserver_->server_->connections_.end(); it++){
+            std::string cmd = "synpub\r\n";
+            it->second->send(cmd);
+        }
+    }
+}
+
+void Hub::handle_synpub_sig() {
+    node_synpub_over_count_++;
+    if (node_synpub_over_count_ == pubsubserver_->server_->connections_.size()) {
         node_step_over_count_ = 0; // 清零，准备计算下一步完成仿真的节点数量（同步）
+        node_synpub_over_count_ = 0;
+        step_cmd(); // 下一步仿真指令
     }
 }
 

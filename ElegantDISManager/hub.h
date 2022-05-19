@@ -28,6 +28,7 @@ public slots:
     void init_cmd();
     void handle_step_sig();
     void handle_sim_msg(QVariant);
+    void handle_synpub_sig();
 
 private:
     Ui::Hub *ui;
@@ -37,6 +38,7 @@ private:
     pubsub::PubSubServer *pubsubserver_;
 
     std::size_t node_step_over_count_;     // 在每一步仿真中已经完成仿真的节点数量
+    std::size_t node_synpub_over_count_;
     std::size_t total_sim_steps_;         // 总仿真步长
     std::size_t max_sim_steps_;            // 最大仿真步长
 };

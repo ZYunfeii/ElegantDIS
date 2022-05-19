@@ -54,6 +54,9 @@ void PubSubServer::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestam
                 // todo
                 // emit init_over_sig();
             }
+            else if (cmd == "synpubover") {
+                emit synpub_over_sig();
+            }
             else {
                 conn->shutdown(); // 否则关闭连接
                 result = kError;

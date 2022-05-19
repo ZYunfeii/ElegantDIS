@@ -25,6 +25,7 @@ public:
 signals:
     void log_msg(QVariant);
     void update_topic_data(QVariant topic_name, QVariant topic_data); // the signal which let interface update the subscribed data
+    void synpub_sig();
 
 public slots:
     void start();
@@ -42,6 +43,8 @@ public:
     void unsubscribe(const string& topic);
     bool publish(const string& topic, const string& content);
 
+    bool send(const string& message);
+
     std::string ip_;
     uint16_t port_;
 
@@ -50,7 +53,6 @@ private:
     void onMessage(const muduo::net::TcpConnectionPtr& conn,
                    muduo::net::Buffer* buf,
                    muduo::Timestamp receiveTime);
-    bool send(const string& message);
 
     void subscription(const string& topic, const string& content, Timestamp);
     void connection(PubSubClient *client);

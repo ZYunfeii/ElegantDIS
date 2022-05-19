@@ -44,6 +44,9 @@ ParseResult pubsub::parseMessage(Buffer* buf, string* cmd, string* topic, string
             } else if (*cmd == "init") {
                 buf->retrieveUntil(crlf+2);
                 result = kSuccess;
+            } else if (*cmd == "synpub") {
+                buf->retrieveUntil(crlf+2);
+                result = kSuccess;
             }
             else {
                 result = kError;

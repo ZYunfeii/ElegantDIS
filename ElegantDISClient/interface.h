@@ -6,7 +6,6 @@
 #include <QVariant>
 #include <map>
 #include "pubsub.h"
-#include "clienttopic.h"
 namespace Ui {
 class interface;
 }
@@ -32,6 +31,7 @@ public slots:
     void handle_log_msg(QVariant);
     void handle_topic_update(QVariant topic_name, QVariant topic_data);
     void connect_hub();
+    void handle_synpub();
 
 public:
     explicit interface(QWidget *parent = nullptr);
@@ -48,8 +48,10 @@ private:
 private:
     std::vector<std::string> subscribe_topic_name_;
     std::vector<std::string> publish_topic_name_;
-    std::map<std::string, ClientTopic> subscribe_topic_map_;
-    std::map<std::string, ClientTopic> publish_topic_map_;
+    std::map<std::string, double> subscribe_topic_map_;
+    std::map<std::string, double> publish_topic_map_;
+
+    std::size_t syn_topic_count_;
 };
 
 #endif // INTERFACE_H

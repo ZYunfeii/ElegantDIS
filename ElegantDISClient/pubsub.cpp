@@ -97,6 +97,9 @@ void PubSubClient::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestam
                 initCallback_();
                 send("initover\r\n");
             }
+            if (cmd == "synpub") {
+                emit synpub_sig();
+            }
         }
         else if (result == kError) {
             conn->shutdown();

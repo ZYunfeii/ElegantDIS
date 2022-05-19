@@ -26,7 +26,6 @@ SOURCES += \
     pubsub.cpp
 
 HEADERS += \
-    clienttopic.h \
     codec.h \
     interface.h \
     pubsub.h
