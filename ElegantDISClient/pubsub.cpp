@@ -21,8 +21,8 @@ void PubSubClient::connection(PubSubClient *client) {
 
 PubSubClient::PubSubClient() {
     qRegisterMetaType<QVariant>("QVariant");
-    ip_ = "127.0.0.1";
-    port_ = 9999;
+    ip_ = "127.0.0.1"; 
+    port_ = 9999;     
 }
 
 void PubSubClient::start() {
@@ -88,9 +88,14 @@ void PubSubClient::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestam
                 subscribeCallback_(topic, content, receiveTime);
             }
             if (cmd == "step") {
-                emit log_msg(QString("[Step cmd received!]"));
+                emit log_msg(QString("[Info] Step cmd received!"));
                 stepCallback_();
                 send("stepover\r\n");
+            }
+            if (cmd == "init") {
+                emit log_msg(QString("[Info] Init cmd received!"));
+                initCallback_();
+                send("initover\r\n");
             }
         }
         else if (result == kError) {

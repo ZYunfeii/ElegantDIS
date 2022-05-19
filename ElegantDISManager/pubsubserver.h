@@ -28,6 +28,7 @@ signals:
     void log_msg(QVariant);
     void update_topic_sig();
     void step_over_sig();
+    void init_over_sig();
 
 public slots:
     void start();

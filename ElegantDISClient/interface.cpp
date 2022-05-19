@@ -33,6 +33,7 @@ interface::interface(QWidget *parent) :
     connect(pubsubclient_, &pubsub::PubSubClient::update_topic_data, this, &interface::handle_topic_update);
 
     pubsubclient_->setStepCallback(std::bind(&interface::step_func, this)); // set the step callback for simnode
+    pubsubclient_->setInitCallback(std::bind(&interface::init_func, this)); // set the init callback for simnode
     topic_init(); // init topic
     pubsubclient_->setSubscribeTopics(subscribe_topic_name_); // set topics subscribed
 }
@@ -62,6 +63,12 @@ void interface::step_func() {
 
     this->pubsubclient_->publish("Data3", num_to_string(publish_topic_map_["Data3"].topic_data_));
     this->pubsubclient_->publish("Data4", num_to_string(publish_topic_map_["Data4"].topic_data_));
+}
+
+void interface::init_func() {
+    for (auto it = subscribe_topic_map_.begin(); it != subscribe_topic_map_.end(); it++) {
+        it->second.topic_data_ = 0;
+    }
 }
 
 void interface::topic_init() {

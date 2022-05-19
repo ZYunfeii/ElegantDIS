@@ -18,7 +18,8 @@ public:
                                 const string& content,
                                 muduo::Timestamp)> SubscribeCallback;
 
-    typedef std::function<void(void)> StepCallback; // step callback func
+    typedef std::function<void(void)> StepCallback; // step callback func for top layer in DIS
+    typedef std::function<void(void)> InitCallback; // init callback func for top layer in DIS
 
     PubSubClient();
 signals:
@@ -34,6 +35,7 @@ public:
 
     void setConnectionCallback(const ConnectionCallback& cb) {connectionCallback_ = cb;}
     void setStepCallback(const StepCallback& cb) {stepCallback_ = cb;}
+    void setInitCallback(const InitCallback& cb) {initCallback_ = cb;}
     void setSubscribeTopics(std::vector<string> &topics) {subscribe_topics_ = topics;}
 
     bool subscribe(const string& topic, const SubscribeCallback& cb);
@@ -58,6 +60,7 @@ private:
     ConnectionCallback connectionCallback_;
     SubscribeCallback subscribeCallback_;
     StepCallback stepCallback_;
+    InitCallback initCallback_;
     EventLoop *loop_;
     std::vector<std::string> subscribe_topics_;
 

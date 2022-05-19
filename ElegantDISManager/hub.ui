@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>831</width>
+    <height>611</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,15 +16,44 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <widget class="QTextBrowser" name="text_browser"/>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QTextBrowser" name="text_browser"/>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QTreeView" name="topic_tree_view"/>
+        </item>
+        <item>
+         <widget class="QTextBrowser" name="sim_text_browser"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QPushButton" name="start_sim_button">
+          <property name="text">
+           <string>start sim</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="init_sim_button">
+          <property name="text">
+           <string>init sim</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
     </item>
     <item row="1" column="0">
-     <widget class="QTextBrowser" name="topic_browser"/>
-    </item>
-    <item row="2" column="0">
-     <widget class="QPushButton" name="start_sim_button">
-      <property name="text">
-       <string>start sim</string>
+     <widget class="QProgressBar" name="sim_process_bar">
+      <property name="value">
+       <number>24</number>
       </property>
      </widget>
     </item>
@@ -35,7 +64,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>831</width>
      <height>22</height>
     </rect>
    </property>

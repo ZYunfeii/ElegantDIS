@@ -41,7 +41,11 @@ ParseResult pubsub::parseMessage(Buffer* buf, string* cmd, string* topic, string
             if (*cmd == "step") {
                 buf->retrieveUntil(crlf+2);
                 result = kSuccess;
-            }else {
+            } else if (*cmd == "init") {
+                buf->retrieveUntil(crlf+2);
+                result = kSuccess;
+            }
+            else {
                 result = kError;
             }
 

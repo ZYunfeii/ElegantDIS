@@ -32,27 +32,30 @@ void PubSubServer::onConnection(const TcpConnectionPtr& conn) {
 
 void PubSubServer::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestamp receiveTime) {
     ParseResult result = kSuccess;
-    while (result == kSuccess) {
+    while (result == kSuccess) { 
         string cmd;
         string topic;
         string content;
-        result = parseMessage(buf, &cmd, &topic, &content);
-        if (result == kSuccess) {
-            if (cmd == "pub") {
+        result = parseMessage(buf, &cmd, &topic, &content); // 对buf中收到的字节流进行处理
+        if (result == kSuccess) { // 处理到一个满足格式要求的指令
+            if (cmd == "pub") {  // 如果指令是客户节点的发布指令
                 doPublish(conn->name(), topic, content, receiveTime);
             }
-            else if (cmd == "sub") {
+            else if (cmd == "sub") { // 如果指令是客户节点的订阅指令
                 doSubscribe(conn, topic);
             }
-            else if (cmd == "unsub") {
+            else if (cmd == "unsub") { // 如果指令是客户节点的退订指令
                 doUnsubscribe(conn, topic);
             }
-            else if (cmd == "stepover") {
+            else if (cmd == "stepover") { // 如果指令是客户节点完成一步仿真指令
+                emit step_over_sig(); // 发送信号使主线程采取相应动作
+            }
+            else if (cmd == "initover") {
                 // todo
-                emit step_over_sig();
+                // emit init_over_sig();
             }
             else {
-                conn->shutdown();
+                conn->shutdown(); // 否则关闭连接
                 result = kError;
             }
         }

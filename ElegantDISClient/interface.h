@@ -10,7 +10,18 @@
 namespace Ui {
 class interface;
 }
-
+/*
+模块名：分布式客户节点客户端界面
+功能：完成客户节点日志信息显示和连接管理节点功能
+输入：ip，port，管理节点命令cmd
+输出：日志信息
+参数注释：见模块内注释
+调用注释：调用pubsub类产生客户节点对象
+限制注释：无
+异常结束注释：进程收到SIGTERM或SIGINT信号后退出
+方法注释：见帮助文档
+外部环境及资源注释：Linux Ubuntu18.04虚拟机、muduo网络库、boost库
+*/
 class interface : public QWidget
 {
     Q_OBJECT
@@ -26,7 +37,8 @@ public:
     explicit interface(QWidget *parent = nullptr);
     ~interface();
 private:
-    void step_func();
+    void step_func(); // 仿真步进函数
+    void init_func(); // 仿真初始化函数
     void topic_init();
 
 private:
