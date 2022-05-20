@@ -91,6 +91,7 @@ void PubSubClient::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestam
                 emit log_msg(QString("[Info] Step cmd received!"));
                 stepCallback_();
                 send("stepover\r\n");
+                emit update_pubsub_data_sig();
             }
             if (cmd == "init") {
                 emit log_msg(QString("[Info] Init cmd received!"));

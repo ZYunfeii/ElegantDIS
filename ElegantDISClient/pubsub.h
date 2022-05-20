@@ -26,6 +26,7 @@ signals:
     void log_msg(QVariant);
     void update_topic_data(QVariant topic_name, QVariant topic_data); // the signal which let interface update the subscribed data
     void synpub_sig();
+    void update_pubsub_data_sig();
 
 public slots:
     void start();

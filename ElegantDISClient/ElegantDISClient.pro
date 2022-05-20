@@ -4,6 +4,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 LIBS += -lmuduo_net
 LIBS += -lmuduo_base
 LIBS += -lpthread
+LIBS += -ljsoncpp
 
 CONFIG += c++11
 

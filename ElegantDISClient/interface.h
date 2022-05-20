@@ -5,7 +5,10 @@
 #include <QThread>
 #include <QVariant>
 #include <map>
+#include "jsoncpp/json/json.h"
 #include "pubsub.h"
+
+
 namespace Ui {
 class interface;
 }
@@ -32,6 +35,7 @@ public slots:
     void handle_topic_update(QVariant topic_name, QVariant topic_data);
     void connect_hub();
     void handle_synpub();
+    void update_pubsub_data_browser();
 
 public:
     explicit interface(QWidget *parent = nullptr);
@@ -41,17 +45,15 @@ private:
     void init_func(); // 仿真初始化函数
     void topic_init();
 
-    void update_pubsub_data_browser();
+    
 
 private:
     Ui::interface *ui;
     QThread *thread_;
     pubsub::PubSubClient *pubsubclient_;
 private:
-    std::vector<std::string> subscribe_topic_name_;
-    std::vector<std::string> publish_topic_name_;
-    std::map<std::string, double> subscribe_topic_map_;
-    std::map<std::string, double> publish_topic_map_;
+    std::map<std::string, Json::Value> publish_topic_json_map_;
+    std::map<std::string, Json::Value> subscribe_topic_json_map_;
 
     std::size_t syn_topic_count_; // 记录每一步仿真中已经更新的订阅话题数量
 };
