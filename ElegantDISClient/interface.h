@@ -41,6 +41,8 @@ private:
     void init_func(); // 仿真初始化函数
     void topic_init();
 
+    void update_pubsub_data_browser();
+
 private:
     Ui::interface *ui;
     QThread *thread_;

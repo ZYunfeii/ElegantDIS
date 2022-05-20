@@ -10,6 +10,7 @@ Hub::Hub(QWidget *parent)
     , node_synpub_over_count_(0)
     , total_sim_steps_(0)
     , max_sim_steps_(10)
+    , node_init_over_count_(0)
 {
     ui->setupUi(this);
     connect(this, &Hub::start_server_sig, pubsubserver_, &pubsub::PubSubServer::start);
@@ -21,8 +22,9 @@ Hub::Hub(QWidget *parent)
 
     connect(this->pubsubserver_, &pubsub::PubSubServer::update_topic_sig, this, &Hub::update_topic_show);
     connect(ui->start_sim_button, &QPushButton::clicked, this, &Hub::step_cmd);
-    connect(this->pubsubserver_, &pubsub::PubSubServer::step_over_sig, this, &Hub::handle_step_sig); // todo
+    connect(this->pubsubserver_, &pubsub::PubSubServer::step_over_sig, this, &Hub::handle_step_sig); 
     connect(this->pubsubserver_, &pubsub::PubSubServer::synpub_over_sig, this, &Hub::handle_synpub_sig);
+    connect(this->pubsubserver_, &pubsub::PubSubServer::init_over_sig, this, &Hub::handle_initover_sig);
 
     // tree view init
     tree_model_ = std::make_shared<QStandardItemModel>(this);
@@ -79,12 +81,12 @@ void Hub::handle_synpub_sig() {
     }
 }
 
-void Hub::handle_log_msg(QVariant msg){
+void Hub::handle_log_msg(QVariant msg){ // 显示日志信息
     QString msg_rev = msg.value<QString>();
     ui->text_browser->append(msg_rev);
 }
 
-void Hub::handle_sim_msg(QVariant msg){
+void Hub::handle_sim_msg(QVariant msg){ // 显示仿真信息
     QString msg_rev = msg.value<QString>();
     ui->sim_text_browser->append(msg_rev);
 }
@@ -92,6 +94,9 @@ void Hub::handle_sim_msg(QVariant msg){
 void Hub::update_topic_show(){
     tree_model_->clear();
     tree_model_->setHorizontalHeaderLabels(QStringList()<<"Node IpPort"<<"Topics Subscribed");
+    ui->topic_tree_view->setModel(tree_model_.get());
+    ui->topic_tree_view->header()->resizeSection(0,150);
+    ui->topic_tree_view->expandAll();
     for(auto it = pubsubserver_->server_->connections_.begin(); it != pubsubserver_->server_->connections_.end(); it++) {
         const InetAddress peer_address = it->second->peerAddress();
         QStandardItem *item = new QStandardItem(QString::fromStdString(peer_address.toIpPort()));
@@ -104,9 +109,13 @@ void Hub::update_topic_show(){
             tree_model_->appendRow(qlist);
         }
     }
-    // 设置表头
-    ui->topic_tree_view->setModel(tree_model_.get());
-    ui->topic_tree_view->expandAll();
+}
+
+void Hub::handle_initover_sig() {
+    if (++node_init_over_count_ == pubsubserver_->server_->connections_.size()) {
+        node_init_over_count_ = 0;
+        handle_sim_msg(QString("[Info] All nodes initialized!"));
+    }
 }
 
 Hub::~Hub()

@@ -15,6 +15,7 @@
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QFormLayout>
 #include <QtWidgets/QGridLayout>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -36,13 +37,17 @@ public:
     QLineEdit *port_edit;
     QLabel *label;
     QPushButton *connect_button;
+    QHBoxLayout *horizontalLayout;
     QTextBrowser *info_browser;
+    QVBoxLayout *verticalLayout_2;
+    QTextBrowser *topic_pub_data_browser;
+    QTextBrowser *topic_sub_data_browser;
 
     void setupUi(QWidget *interface)
     {
         if (interface->objectName().isEmpty())
             interface->setObjectName(QStringLiteral("interface"));
-        interface->resize(536, 379);
+        interface->resize(611, 453);
         gridLayout = new QGridLayout(interface);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
         verticalLayout = new QVBoxLayout();
@@ -80,10 +85,30 @@ public:
 
         gridLayout->addLayout(verticalLayout, 0, 0, 1, 1);
 
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         info_browser = new QTextBrowser(interface);
         info_browser->setObjectName(QStringLiteral("info_browser"));
 
-        gridLayout->addWidget(info_browser, 1, 0, 1, 1);
+        horizontalLayout->addWidget(info_browser);
+
+        verticalLayout_2 = new QVBoxLayout();
+        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
+        topic_pub_data_browser = new QTextBrowser(interface);
+        topic_pub_data_browser->setObjectName(QStringLiteral("topic_pub_data_browser"));
+
+        verticalLayout_2->addWidget(topic_pub_data_browser);
+
+        topic_sub_data_browser = new QTextBrowser(interface);
+        topic_sub_data_browser->setObjectName(QStringLiteral("topic_sub_data_browser"));
+
+        verticalLayout_2->addWidget(topic_sub_data_browser);
+
+
+        horizontalLayout->addLayout(verticalLayout_2);
+
+
+        gridLayout->addLayout(horizontalLayout, 1, 0, 1, 1);
 
 
         retranslateUi(interface);

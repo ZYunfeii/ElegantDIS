@@ -67,6 +67,21 @@ void interface::handle_topic_update(QVariant topic_name, QVariant topic_data) {
 void interface::step_func() {
     publish_topic_map_["Data1"] = subscribe_topic_map_["Data3"]+ 2;
     publish_topic_map_["Data2"] = subscribe_topic_map_["Data4"] + 3;
+
+    update_pubsub_data_browser();
+}
+
+void interface::update_pubsub_data_browser() {
+    ui->topic_pub_data_browser->clear();
+    ui->topic_sub_data_browser->clear();
+    ui->topic_pub_data_browser->append(QString("Topics Published"));
+    ui->topic_sub_data_browser->append(QString("Topics Subscribed"));
+    for(auto it = publish_topic_map_.begin(); it != publish_topic_map_.end(); ++it) {
+        ui->topic_pub_data_browser->append(QString::fromStdString(it->first) + ":" + QString::number(it->second));
+    }
+    for (auto it = subscribe_topic_map_.begin(); it != subscribe_topic_map_.end(); it++) {
+        ui->topic_sub_data_browser->append(QString::fromStdString(it->first) + ":" + QString::number(it->second));
+    }
 }
 
 void interface::handle_synpub() {
@@ -84,12 +99,18 @@ void interface::init_func() {
 void interface::topic_init() {
     this->subscribe_topic_name_ = std::vector<std::string>{"Data3", "Data4"}; // 仿真输入
     this->publish_topic_name_ = std::vector<std::string>{"Data1", "Data2"};   // 仿真输出
+
+    ui->topic_pub_data_browser->append(QString("Topics Published"));
+    ui->topic_sub_data_browser->append(QString("Topics Subscribed"));
     for(auto &topic : subscribe_topic_name_) {
         this->subscribe_topic_map_.insert(std::make_pair(topic, 0));
+        ui->topic_sub_data_browser->append(QString::fromStdString(topic) + ":");
     }
     for(auto &topic : publish_topic_name_) {
         this->publish_topic_map_.insert(std::make_pair(topic, 0));
+        ui->topic_pub_data_browser->append(QString::fromStdString(topic) + ":");
     }
+
 }
 
 interface::~interface()

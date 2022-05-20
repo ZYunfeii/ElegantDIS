@@ -52,7 +52,7 @@ void PubSubServer::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestam
             }
             else if (cmd == "initover") {
                 // todo
-                // emit init_over_sig();
+                emit init_over_sig();
             }
             else if (cmd == "synpubover") {
                 emit synpub_over_sig();

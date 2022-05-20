@@ -29,6 +29,7 @@ public slots:
     void handle_step_sig();
     void handle_sim_msg(QVariant);
     void handle_synpub_sig();
+    void handle_initover_sig();
 
 private:
     Ui::Hub *ui;
@@ -41,5 +42,6 @@ private:
     std::size_t node_synpub_over_count_;   // 在每一步仿真中已经完成话题更新的节点数量
     std::size_t total_sim_steps_;         // 总仿真步长
     std::size_t max_sim_steps_;            // 最大仿真步长
+    std::size_t node_init_over_count_;
 };
 #endif // HUB_H

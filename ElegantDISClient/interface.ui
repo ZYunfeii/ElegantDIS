@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>536</width>
-    <height>379</height>
+    <width>611</width>
+    <height>453</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -58,7 +58,21 @@
     </layout>
    </item>
    <item row="1" column="0">
-    <widget class="QTextBrowser" name="info_browser"/>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QTextBrowser" name="info_browser"/>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QTextBrowser" name="topic_pub_data_browser"/>
+       </item>
+       <item>
+        <widget class="QTextBrowser" name="topic_sub_data_browser"/>
+       </item>
+      </layout>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
