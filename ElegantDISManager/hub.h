@@ -6,6 +6,7 @@
 #include <QStandardItemModel>
 
 #include "pubsubserver.h"
+#include "settingwidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Hub; }
@@ -42,6 +43,8 @@ private:
     std::size_t node_synpub_over_count_;   // 在每一步仿真中已经完成话题更新的节点数量
     std::size_t total_sim_steps_;         // 总仿真步长
     std::size_t max_sim_steps_;            // 最大仿真步长
-    std::size_t node_init_over_count_;
+    std::size_t node_init_over_count_;     // 已经初始化完成的节点数量
+
+    SettingWidget *setting_widget_;
 };
 #endif // HUB_H

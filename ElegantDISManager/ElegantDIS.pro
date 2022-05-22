@@ -23,16 +23,19 @@ SOURCES += \
     codec.cpp \
     main.cpp \
     hub.cpp \
-    pubsubserver.cpp
+    pubsubserver.cpp \
+    settingwidget.cpp
 
 HEADERS += \
     codec.h \
     hub.h \
     pubsubserver.h \
+    settingwidget.h \
     topic.h
 
 FORMS += \
-    hub.ui
+    hub.ui \
+    settingwidget.ui
 
 CONFIG+=debug_and_release
 CONFIG(debug, debug|release){

@@ -4,6 +4,8 @@
 
 # 项目效果展示
 
+![](/home/yunfei/MyProject/ElegantDIS/README.assets/DIS.gif)
+
 ## 管理节点
 
 1. 日志显示栏
@@ -42,6 +44,10 @@ IDE采用vscode，用qtcreator也可以。
 若用vscode，打开项目下的ElegantDISManager或者ElegantDISClient后配置 .vscode目录下的json（正常来说不需要修改），之后用vscode gdb模式编译运行即可。
 
 # 项目原理
+
+总体逻辑图如下:
+
+![image-20220520191503451](/home/yunfei/MyProject/ElegantDIS/README.assets/image-20220520191503451.png)
 
 项目基于Muduo网络库，受其中examples/hub代码启发，正巧实验室只有Win下的分布式系统，想自己开发一个Linux下的。
 

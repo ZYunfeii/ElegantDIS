@@ -17,6 +17,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
@@ -31,6 +32,7 @@ QT_BEGIN_NAMESPACE
 class Ui_Hub
 {
 public:
+    QAction *setting_button;
     QWidget *centralwidget;
     QGridLayout *gridLayout;
     QVBoxLayout *verticalLayout;
@@ -43,6 +45,7 @@ public:
     QPushButton *init_sim_button;
     QProgressBar *sim_process_bar;
     QMenuBar *menubar;
+    QMenu *setting;
     QStatusBar *statusbar;
 
     void setupUi(QMainWindow *Hub)
@@ -50,6 +53,8 @@ public:
         if (Hub->objectName().isEmpty())
             Hub->setObjectName(QStringLiteral("Hub"));
         Hub->resize(831, 611);
+        setting_button = new QAction(Hub);
+        setting_button->setObjectName(QStringLiteral("setting_button"));
         centralwidget = new QWidget(Hub);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
         gridLayout = new QGridLayout(centralwidget);
@@ -104,10 +109,15 @@ public:
         menubar = new QMenuBar(Hub);
         menubar->setObjectName(QStringLiteral("menubar"));
         menubar->setGeometry(QRect(0, 0, 831, 22));
+        setting = new QMenu(menubar);
+        setting->setObjectName(QStringLiteral("setting"));
         Hub->setMenuBar(menubar);
         statusbar = new QStatusBar(Hub);
         statusbar->setObjectName(QStringLiteral("statusbar"));
         Hub->setStatusBar(statusbar);
+
+        menubar->addAction(setting->menuAction());
+        setting->addAction(setting_button);
 
         retranslateUi(Hub);
 
@@ -117,8 +127,10 @@ public:
     void retranslateUi(QMainWindow *Hub)
     {
         Hub->setWindowTitle(QApplication::translate("Hub", "Hub", Q_NULLPTR));
+        setting_button->setText(QApplication::translate("Hub", "setting", Q_NULLPTR));
         start_sim_button->setText(QApplication::translate("Hub", "start sim", Q_NULLPTR));
         init_sim_button->setText(QApplication::translate("Hub", "init sim", Q_NULLPTR));
+        setting->setTitle(QApplication::translate("Hub", "Setting", Q_NULLPTR));
     } // retranslateUi
 
 };

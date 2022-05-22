@@ -24,6 +24,9 @@ interface::interface(QWidget *parent) :
         sub_topics_name.push_back(it->first);
     }
     pubsubclient_->setSubscribeTopics(sub_topics_name); // set topics subscribed
+
+    // log text browser init
+    ui->info_browser->document()->setMaximumBlockCount(50);
 }
 
 void interface::connect_hub() {

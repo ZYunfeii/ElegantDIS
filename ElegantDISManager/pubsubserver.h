@@ -19,7 +19,7 @@ using namespace muduo::net;
 
 namespace pubsub {
 typedef std::set<string> ConnectionSubscription;
-class PubSubServer : public QObject{
+class PubSubServer : public QObject {
     Q_OBJECT
 public:
     PubSubServer();
@@ -48,6 +48,7 @@ public:
     std::map<string, Topic> topics_;
     TcpServer *server_;
     EventLoop *loop_;
+
 };
 
 }

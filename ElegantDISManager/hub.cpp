@@ -11,8 +11,11 @@ Hub::Hub(QWidget *parent)
     , total_sim_steps_(0)
     , max_sim_steps_(10)
     , node_init_over_count_(0)
+    , setting_widget_(new SettingWidget)
 {
     ui->setupUi(this);
+    connect(ui->setting_button, &QAction::triggered, this, [&](){this->setting_widget_->show();});
+
     connect(this, &Hub::start_server_sig, pubsubserver_, &pubsub::PubSubServer::start);
     connect(ui->init_sim_button, &QPushButton::clicked, this, &Hub::init_cmd);
     connect(pubsubserver_, &pubsub::PubSubServer::log_msg, this, &Hub::handle_log_msg);
@@ -30,9 +33,15 @@ Hub::Hub(QWidget *parent)
     tree_model_ = std::make_shared<QStandardItemModel>(this);
     // process bar init
     ui->sim_process_bar->setValue(0);
+    // log text browser init
+    ui->text_browser->document()->setMaximumBlockCount(50);
+    // sim browser init
+    ui->sim_text_browser->document()->setMaximumBlockCount(50);
 }
 
 void Hub::init_cmd() {
+    max_sim_steps_ = this->setting_widget_->get_max_steps(); // 从setting窗口获取仿真参数
+    handle_sim_msg(QString("[Info] max sim steps:%1").arg(max_sim_steps_));
     if (pubsubserver_->server_->connections_.empty()) {
         handle_log_msg(QString("No simnode!"));
         return;

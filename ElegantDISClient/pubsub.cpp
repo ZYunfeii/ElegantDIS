@@ -67,6 +67,7 @@ void PubSubClient::onConnection(const TcpConnectionPtr& conn) {
     if (conn->connected()) {
         conn_ = conn;
         // FIXME: re-sub
+        emit log_msg(QString("[Info] Connected!"));
     }
     else {
         conn_.reset();
@@ -97,6 +98,7 @@ void PubSubClient::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestam
                 emit log_msg(QString("[Info] Init cmd received!"));
                 initCallback_();
                 send("initover\r\n");
+                emit update_pubsub_data_sig();
             }
             if (cmd == "synpub") {
                 emit synpub_sig();
