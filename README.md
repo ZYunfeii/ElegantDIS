@@ -4,7 +4,7 @@
 
 # 项目效果展示
 
-![](/home/yunfei/MyProject/ElegantDIS/README.assets/DIS.gif)
+![](./README.assets/DIS.gif)
 
 ## 管理节点
 
@@ -47,7 +47,7 @@ IDE采用vscode，用qtcreator也可以。
 
 总体逻辑图如下:
 
-![image-20220520191503451](/home/yunfei/MyProject/ElegantDIS/README.assets/image-20220520191503451.png)
+![image-20220520191503451](./README.assets/image-20220520191503451.png)
 
 项目基于Muduo网络库，受其中examples/hub代码启发，正巧实验室只有Win下的分布式系统，想自己开发一个Linux下的。
 
