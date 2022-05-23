@@ -24,14 +24,16 @@ SOURCES += \
     main.cpp \
     hub.cpp \
     pubsubserver.cpp \
-    settingwidget.cpp
+    settingwidget.cpp \
+    timer.cpp
 
 HEADERS += \
     codec.h \
     hub.h \
     pubsubserver.h \
     settingwidget.h \
-    topic.h
+    topic.h \
+    timer.h
 
 FORMS += \
     hub.ui \

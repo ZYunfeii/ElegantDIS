@@ -16,11 +16,13 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLCDNumber>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTextBrowser>
 #include <QtWidgets/QTreeView>
@@ -36,6 +38,9 @@ public:
     QWidget *centralwidget;
     QGridLayout *gridLayout;
     QVBoxLayout *verticalLayout;
+    QHBoxLayout *horizontalLayout_3;
+    QSpacerItem *horizontalSpacer;
+    QLCDNumber *time_lcd;
     QTextBrowser *text_browser;
     QHBoxLayout *horizontalLayout;
     QTreeView *topic_tree_view;
@@ -43,6 +48,7 @@ public:
     QHBoxLayout *horizontalLayout_2;
     QPushButton *start_sim_button;
     QPushButton *init_sim_button;
+    QPushButton *pause_continue;
     QProgressBar *sim_process_bar;
     QMenuBar *menubar;
     QMenu *setting;
@@ -61,6 +67,26 @@ public:
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_3->addItem(horizontalSpacer);
+
+        time_lcd = new QLCDNumber(centralwidget);
+        time_lcd->setObjectName(QStringLiteral("time_lcd"));
+        time_lcd->setStyleSheet(QLatin1String("border:2pxsolidgreen;\n"
+"color:#00FF00;\n"
+"background:black;"));
+        time_lcd->setSmallDecimalPoint(false);
+        time_lcd->setDigitCount(12);
+        time_lcd->setSegmentStyle(QLCDNumber::Flat);
+
+        horizontalLayout_3->addWidget(time_lcd);
+
+
+        verticalLayout->addLayout(horizontalLayout_3);
+
         text_browser = new QTextBrowser(centralwidget);
         text_browser->setObjectName(QStringLiteral("text_browser"));
 
@@ -96,14 +122,19 @@ public:
 
         verticalLayout->addLayout(horizontalLayout_2);
 
+        pause_continue = new QPushButton(centralwidget);
+        pause_continue->setObjectName(QStringLiteral("pause_continue"));
 
-        gridLayout->addLayout(verticalLayout, 0, 0, 1, 1);
+        verticalLayout->addWidget(pause_continue);
 
         sim_process_bar = new QProgressBar(centralwidget);
         sim_process_bar->setObjectName(QStringLiteral("sim_process_bar"));
         sim_process_bar->setValue(24);
 
-        gridLayout->addWidget(sim_process_bar, 1, 0, 1, 1);
+        verticalLayout->addWidget(sim_process_bar);
+
+
+        gridLayout->addLayout(verticalLayout, 0, 0, 1, 1);
 
         Hub->setCentralWidget(centralwidget);
         menubar = new QMenuBar(Hub);
@@ -130,6 +161,7 @@ public:
         setting_button->setText(QApplication::translate("Hub", "setting", Q_NULLPTR));
         start_sim_button->setText(QApplication::translate("Hub", "start sim", Q_NULLPTR));
         init_sim_button->setText(QApplication::translate("Hub", "init sim", Q_NULLPTR));
+        pause_continue->setText(QApplication::translate("Hub", "pause_continue", Q_NULLPTR));
         setting->setTitle(QApplication::translate("Hub", "Setting", Q_NULLPTR));
     } // retranslateUi
 

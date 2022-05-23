@@ -18,6 +18,41 @@
     <item row="0" column="0">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLCDNumber" name="time_lcd">
+          <property name="styleSheet">
+           <string notr="true">border:2pxsolidgreen;
+color:#00FF00;
+background:black;</string>
+          </property>
+          <property name="smallDecimalPoint">
+           <bool>false</bool>
+          </property>
+          <property name="digitCount">
+           <number>12</number>
+          </property>
+          <property name="segmentStyle">
+           <enum>QLCDNumber::Flat</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <widget class="QTextBrowser" name="text_browser"/>
       </item>
       <item>
@@ -48,14 +83,21 @@
         </item>
        </layout>
       </item>
+      <item>
+       <widget class="QPushButton" name="pause_continue">
+        <property name="text">
+         <string>pause_continue</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QProgressBar" name="sim_process_bar">
+        <property name="value">
+         <number>24</number>
+        </property>
+       </widget>
+      </item>
      </layout>
-    </item>
-    <item row="1" column="0">
-     <widget class="QProgressBar" name="sim_process_bar">
-      <property name="value">
-       <number>24</number>
-      </property>
-     </widget>
     </item>
    </layout>
   </widget>

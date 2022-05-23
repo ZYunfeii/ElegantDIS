@@ -7,6 +7,7 @@
 
 #include "pubsubserver.h"
 #include "settingwidget.h"
+#include "timer.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Hub; }
@@ -31,6 +32,7 @@ public slots:
     void handle_sim_msg(QVariant);
     void handle_synpub_sig();
     void handle_initover_sig();
+    void pause_continue();
 
 private:
     Ui::Hub *ui;
@@ -46,5 +48,12 @@ private:
     std::size_t node_init_over_count_;     // 已经初始化完成的节点数量
 
     SettingWidget *setting_widget_;
+
+    enum {
+        PauseSim,
+        ContinueSim
+    } key_pause_continue_;
+
+    tools::Timer *timer_;
 };
 #endif // HUB_H

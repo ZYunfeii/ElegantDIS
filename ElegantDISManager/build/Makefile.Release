@@ -53,7 +53,8 @@ SOURCES       = ../codec.cpp \
 		../main.cpp \
 		../hub.cpp \
 		../pubsubserver.cpp \
-		../settingwidget.cpp release/moc_hub.cpp \
+		../settingwidget.cpp \
+		../timer.cpp release/moc_hub.cpp \
 		release/moc_pubsubserver.cpp \
 		release/moc_settingwidget.cpp
 OBJECTS       = release/codec.o \
@@ -61,6 +62,7 @@ OBJECTS       = release/codec.o \
 		release/hub.o \
 		release/pubsubserver.o \
 		release/settingwidget.o \
+		release/timer.o \
 		release/moc_hub.o \
 		release/moc_pubsubserver.o \
 		release/moc_settingwidget.o
@@ -157,11 +159,13 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../hub.h \
 		../pubsubserver.h \
 		../settingwidget.h \
-		../topic.h ../codec.cpp \
+		../topic.h \
+		../timer.h ../codec.cpp \
 		../main.cpp \
 		../hub.cpp \
 		../pubsubserver.cpp \
-		../settingwidget.cpp
+		../settingwidget.cpp \
+		../timer.cpp
 QMAKE_TARGET  = ElegantDISManager
 DESTDIR       = 
 TARGET        = ElegantDISManager
@@ -188,8 +192,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../codec.h ../hub.h ../pubsubserver.h ../settingwidget.h ../topic.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../codec.cpp ../main.cpp ../hub.cpp ../pubsubserver.cpp ../settingwidget.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../codec.h ../hub.h ../pubsubserver.h ../settingwidget.h ../topic.h ../timer.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../codec.cpp ../main.cpp ../hub.cpp ../pubsubserver.cpp ../settingwidget.cpp ../timer.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../hub.ui ../settingwidget.ui $(DISTDIR)/
 
 
@@ -229,6 +233,7 @@ release/moc_hub.cpp: ../pubsubserver.h \
 		../codec.h \
 		../topic.h \
 		../settingwidget.h \
+		../timer.h \
 		../hub.h \
 		release/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
@@ -276,7 +281,8 @@ release/main.o: ../main.cpp ../hub.h \
 		../pubsubserver.h \
 		../codec.h \
 		../topic.h \
-		../settingwidget.h
+		../settingwidget.h \
+		../timer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release/main.o ../main.cpp
 
 release/hub.o: ../hub.cpp ../hub.h \
@@ -284,6 +290,7 @@ release/hub.o: ../hub.cpp ../hub.h \
 		../codec.h \
 		../topic.h \
 		../settingwidget.h \
+		../timer.h \
 		ui_hub.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release/hub.o ../hub.cpp
 
@@ -295,6 +302,9 @@ release/pubsubserver.o: ../pubsubserver.cpp ../pubsubserver.h \
 release/settingwidget.o: ../settingwidget.cpp ../settingwidget.h \
 		ui_settingwidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release/settingwidget.o ../settingwidget.cpp
+
+release/timer.o: ../timer.cpp ../timer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release/timer.o ../timer.cpp
 
 release/moc_hub.o: release/moc_hub.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release/moc_hub.o release/moc_hub.cpp
