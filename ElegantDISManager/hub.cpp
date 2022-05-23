@@ -51,6 +51,8 @@ void Hub::init_cmd() {
     total_sim_steps_ = 0; // init the sim states
     key_pause_continue_ = ContinueSim; // init the flag 
     ui->time_lcd->display("00:00:00.000"); // time lcd init
+    timer_->stop_time(); // 保证timer_是处在stop状态
+    
     handle_sim_msg(QString("[Info] max sim steps:%1").arg(max_sim_steps_));
     if (pubsubserver_->server_->connections_.empty()) {
         handle_log_msg(QString("No simnode!"));
