@@ -41,7 +41,7 @@ public:
     explicit interface(QWidget *parent = nullptr);
     ~interface();
 private:
-    void step_func(); // 仿真步进函数
+    void step_func(double sim_time); // 仿真步进函数
     void init_func(); // 仿真初始化函数
     void topic_init();
 

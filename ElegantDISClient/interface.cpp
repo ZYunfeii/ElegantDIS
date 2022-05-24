@@ -16,7 +16,7 @@ interface::interface(QWidget *parent) :
     connect(pubsubclient_, &pubsub::PubSubClient::synpub_sig, this, &interface::handle_synpub);
     connect(pubsubclient_, &pubsub::PubSubClient::update_pubsub_data_sig, this, &interface::update_pubsub_data_browser);
 
-    pubsubclient_->setStepCallback(std::bind(&interface::step_func, this)); // set the step callback for simnode
+    pubsubclient_->setStepCallback(std::bind(&interface::step_func, this, std::placeholders::_1)); // set the step callback for simnode
     pubsubclient_->setInitCallback(std::bind(&interface::init_func, this)); // set the init callback for simnode
     topic_init(); // init topic
     std::vector<std::string> sub_topics_name;
@@ -27,6 +27,8 @@ interface::interface(QWidget *parent) :
 
     // log text browser init
     ui->info_browser->document()->setMaximumBlockCount(50);
+    // time lcd init
+    ui->time_lcd->display("00:00:00.000");
 }
 
 void interface::connect_hub() {
@@ -57,8 +59,15 @@ void interface::handle_topic_update(QVariant topic_name, QVariant topic_data) {
     }
 }
 
-void interface::step_func() {
+void interface::step_func(double sim_time) {
     publish_topic_json_map_["Topic1"]["data"] = subscribe_topic_json_map_["Topic1"]["data"].asDouble() + 1;
+    
+    // 更新时间显示
+    int sec = sim_time;
+    int sss = (sim_time - sec) * 1000;
+    ui->time_lcd->display(QString("%1:%2:%3.%4").arg(sec / 60 / 60, 2, 10, QChar('0'))
+                        .arg(sec / 60, 2, 10, QChar('0')).arg(sec % 60, 2, 10, QChar('0'))
+                        .arg(sss, 3, 10, QChar('0')));
 }
 
 void interface::update_pubsub_data_browser() {

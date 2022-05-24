@@ -87,8 +87,13 @@ void Hub::step_cmd(){
         timer_->stop_time();  // 停止时钟,下次使用必须start
         return;
     }
+
+    static Json::FastWriter w;
     for (auto it = pubsubserver_->server_->connections_.begin(); it != pubsubserver_->server_->connections_.end(); it++){
-        std::string cmd = "step\r\n";
+        Json::Value sim_time_value;
+        sim_time_value["sim_time"] = timer_->elapsed_time();  
+        std::string sim_time_json = w.write(sim_time_value);      
+        std::string cmd = "step "  + sim_time_json + "\r\n";
         it->second->send(cmd);
     }
     handle_sim_msg(QString("[Info]:Current Steps:%1").arg(total_sim_steps_));

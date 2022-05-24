@@ -9,13 +9,14 @@ ParseResult pubsub::parseMessage(Buffer* buf, string* cmd, string* topic, string
     const char* crlf = buf->findCRLF();
     if (crlf)
     {
+        // pub + " " + topic + "\r\n" + content + "\r\n"
+        // step + " " + sim_time + "\r\n"
         const char* space = std::find(buf->peek(), crlf, ' ');
         if (space != crlf)
         {
             cmd->assign(buf->peek(), space);
-            topic->assign(space+1, crlf);
-            if (*cmd == "pub")
-            {
+            if (*cmd == "pub") {
+                topic->assign(space+1, crlf);
                 const char* start = crlf + 2;
                 crlf = buf->findCRLF(start);
                 if (crlf)
@@ -28,6 +29,10 @@ ParseResult pubsub::parseMessage(Buffer* buf, string* cmd, string* topic, string
                 {
                     result = kContinue;
                 }
+            } else if (*cmd == "step") {
+                content->assign(space + 1, crlf); // 仿真时间
+                buf->retrieveUntil(crlf+2);
+                result = kSuccess;
             }
             else
             {
@@ -38,10 +43,7 @@ ParseResult pubsub::parseMessage(Buffer* buf, string* cmd, string* topic, string
         else
         {
             cmd->assign(buf->peek(), space);
-            if (*cmd == "step") {
-                buf->retrieveUntil(crlf+2);
-                result = kSuccess;
-            } else if (*cmd == "init") {
+            if (*cmd == "init") {
                 buf->retrieveUntil(crlf+2);
                 result = kSuccess;
             } else if (*cmd == "synpub") {

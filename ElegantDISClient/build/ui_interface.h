@@ -17,6 +17,7 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLCDNumber>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
@@ -32,11 +33,13 @@ public:
     QGridLayout *gridLayout;
     QVBoxLayout *verticalLayout;
     QFormLayout *formLayout;
+    QLabel *label;
     QLineEdit *ip_edit;
     QLabel *label_2;
     QLineEdit *port_edit;
-    QLabel *label;
+    QHBoxLayout *horizontalLayout_2;
     QPushButton *connect_button;
+    QLCDNumber *time_lcd;
     QHBoxLayout *horizontalLayout;
     QTextBrowser *info_browser;
     QVBoxLayout *verticalLayout_2;
@@ -54,6 +57,11 @@ public:
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         formLayout = new QFormLayout();
         formLayout->setObjectName(QStringLiteral("formLayout"));
+        label = new QLabel(interface);
+        label->setObjectName(QStringLiteral("label"));
+
+        formLayout->setWidget(0, QFormLayout::LabelRole, label);
+
         ip_edit = new QLineEdit(interface);
         ip_edit->setObjectName(QStringLiteral("ip_edit"));
 
@@ -69,18 +77,29 @@ public:
 
         formLayout->setWidget(1, QFormLayout::FieldRole, port_edit);
 
-        label = new QLabel(interface);
-        label->setObjectName(QStringLiteral("label"));
-
-        formLayout->setWidget(0, QFormLayout::LabelRole, label);
-
 
         verticalLayout->addLayout(formLayout);
 
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
         connect_button = new QPushButton(interface);
         connect_button->setObjectName(QStringLiteral("connect_button"));
 
-        verticalLayout->addWidget(connect_button);
+        horizontalLayout_2->addWidget(connect_button);
+
+        time_lcd = new QLCDNumber(interface);
+        time_lcd->setObjectName(QStringLiteral("time_lcd"));
+        time_lcd->setStyleSheet(QLatin1String("border:2pxsolidgreen;\n"
+"color:#00FF00;\n"
+"background:black;"));
+        time_lcd->setSmallDecimalPoint(false);
+        time_lcd->setDigitCount(12);
+        time_lcd->setSegmentStyle(QLCDNumber::Flat);
+
+        horizontalLayout_2->addWidget(time_lcd);
+
+
+        verticalLayout->addLayout(horizontalLayout_2);
 
 
         gridLayout->addLayout(verticalLayout, 0, 0, 1, 1);
@@ -119,10 +138,10 @@ public:
     void retranslateUi(QWidget *interface)
     {
         interface->setWindowTitle(QApplication::translate("interface", "Form", Q_NULLPTR));
+        label->setText(QApplication::translate("interface", "HostIP:", Q_NULLPTR));
         ip_edit->setText(QApplication::translate("interface", "127.0.0.1", Q_NULLPTR));
         label_2->setText(QApplication::translate("interface", "HostPort:", Q_NULLPTR));
         port_edit->setText(QApplication::translate("interface", "9999", Q_NULLPTR));
-        label->setText(QApplication::translate("interface", "HostIP:", Q_NULLPTR));
         connect_button->setText(QApplication::translate("interface", "connect", Q_NULLPTR));
     } // retranslateUi
 

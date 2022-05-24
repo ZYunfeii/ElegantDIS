@@ -90,7 +90,10 @@ void PubSubClient::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestam
             }
             if (cmd == "step") {
                 emit log_msg(QString("[Info] Step cmd received!"));
-                stepCallback_();
+                Json::Reader rd;
+                Json::Value sim_time_json;
+                rd.parse(content, sim_time_json);
+                stepCallback_(sim_time_json["sim_time"].asDouble());
                 send("stepover\r\n");
                 emit update_pubsub_data_sig();
             }

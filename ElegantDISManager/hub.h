@@ -9,6 +9,8 @@
 #include "settingwidget.h"
 #include "timer.h"
 
+#include "jsoncpp/json/json.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class Hub; }
 QT_END_NAMESPACE

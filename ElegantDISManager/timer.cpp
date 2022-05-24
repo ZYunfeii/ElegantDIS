@@ -13,6 +13,7 @@ void Timer::timer_start() {
 
 double Timer::elapsed_time() { // 单位:s
     cur_time_ = get_wall_time() - time_stamp_ + offset_time_;
+    if (timer_state_ == TIMERSTOP) return 0;
     return cur_time_;
 }
 

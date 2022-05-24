@@ -5,6 +5,8 @@
 #include "muduo/net/TcpClient.h"
 #include "muduo/net/EventLoop.h"
 
+#include "jsoncpp/json/json.h"
+
 namespace pubsub {
 using muduo::string;
 using namespace muduo;
@@ -18,7 +20,7 @@ public:
                                 const string& content,
                                 muduo::Timestamp)> SubscribeCallback;
 
-    typedef std::function<void(void)> StepCallback; // step callback func for top layer in DIS
+    typedef std::function<void(double)> StepCallback; // step callback func for top layer in DIS
     typedef std::function<void(void)> InitCallback; // init callback func for top layer in DIS
 
     PubSubClient();
