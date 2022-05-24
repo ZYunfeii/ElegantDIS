@@ -86,11 +86,13 @@ void PubSubClient::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestam
         result = parseMessage(buf, &cmd, &topic, &content);
         if (result == kSuccess) {
             if (cmd == "pub" && subscribeCallback_) {
+                // pub + " " + topic + "\r\n" + content + "\r\n"
                 subscribeCallback_(topic, content, receiveTime);
             }
             if (cmd == "step") {
+                // step + " " + sim_time + "\r\n"
                 emit log_msg(QString("[Info] Step cmd received!"));
-                Json::Reader rd;
+                static Json::Reader rd;
                 Json::Value sim_time_json;
                 rd.parse(content, sim_time_json);
                 stepCallback_(sim_time_json["sim_time"].asDouble());

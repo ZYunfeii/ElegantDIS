@@ -9,12 +9,12 @@ interface::interface(QWidget *parent) :
   , syn_topic_count_(0)
 {
     ui->setupUi(this);
-    connect(ui->connect_button, &QPushButton::clicked, this, &interface::connect_hub);
-    connect(this, &interface::start_client_sig, pubsubclient_, &pubsub::PubSubClient::start);
-    connect(pubsubclient_, &pubsub::PubSubClient::log_msg, this, &interface::handle_log_msg);
-    connect(pubsubclient_, &pubsub::PubSubClient::update_topic_data, this, &interface::handle_topic_update);
-    connect(pubsubclient_, &pubsub::PubSubClient::synpub_sig, this, &interface::handle_synpub);
-    connect(pubsubclient_, &pubsub::PubSubClient::update_pubsub_data_sig, this, &interface::update_pubsub_data_browser);
+    connect(ui->connect_button, &QPushButton::clicked, this, &interface::connect_hub); // 连接管理节点
+    connect(this, &interface::start_client_sig, pubsubclient_, &pubsub::PubSubClient::start); // 开始仿真
+    connect(pubsubclient_, &pubsub::PubSubClient::log_msg, this, &interface::handle_log_msg); // 显示日志信息
+    connect(pubsubclient_, &pubsub::PubSubClient::update_topic_data, this, &interface::handle_topic_update); // topic有新值需要更新
+    connect(pubsubclient_, &pubsub::PubSubClient::synpub_sig, this, &interface::handle_synpub); // 发布topic新值
+    connect(pubsubclient_, &pubsub::PubSubClient::update_pubsub_data_sig, this, &interface::update_pubsub_data_browser); // 更新topic显示栏
 
     pubsubclient_->setStepCallback(std::bind(&interface::step_func, this, std::placeholders::_1)); // set the step callback for simnode
     pubsubclient_->setInitCallback(std::bind(&interface::init_func, this)); // set the init callback for simnode
@@ -61,7 +61,7 @@ void interface::handle_topic_update(QVariant topic_name, QVariant topic_data) {
 
 void interface::step_func(double sim_time) {
     publish_topic_json_map_["Topic1"]["data"] = subscribe_topic_json_map_["Topic1"]["data"].asDouble() + 1;
-    
+
     // 更新时间显示
     int sec = sim_time;
     int sss = (sim_time - sec) * 1000;
