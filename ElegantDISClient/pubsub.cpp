@@ -13,6 +13,7 @@ void PubSubClient::connection(PubSubClient *client) {
         if (subscribe_topics_.empty()) {
             emit log_msg(QString("[Warning]: There is no subscribed topics initialized!"));
         }
+        send("nodename " + this->client_->name() + "\r\n");
         for (std::vector<string>::iterator it = subscribe_topics_.begin(); it != subscribe_topics_.end(); ++it) {
             client->subscribe(*it, std::bind(&PubSubClient::subscription,this, _1, _2, _3));
         }

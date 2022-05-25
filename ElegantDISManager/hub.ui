@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>831</width>
-    <height>611</height>
+    <width>858</width>
+    <height>708</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Hub</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout">
+   <layout class="QGridLayout" name="gridLayout_3">
     <item row="0" column="0">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -66,28 +66,77 @@ background:black;</string>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QPushButton" name="start_sim_button">
-          <property name="text">
-           <string>start sim</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="init_sim_button">
-          <property name="text">
-           <string>init sim</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="QGroupBox" name="groupBox">
+        <property name="title">
+         <string>Control</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="QPushButton" name="start_sim_button">
+           <property name="text">
+            <string>start sim</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="init_sim_button">
+           <property name="text">
+            <string>init sim</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QPushButton" name="pause_continue">
+           <property name="text">
+            <string>pause_continue</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QPushButton" name="stop_sim_button">
+           <property name="text">
+            <string>stop sim</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pause_continue">
-        <property name="text">
-         <string>pause_continue</string>
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="title">
+         <string>Para</string>
         </property>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="1" column="2">
+          <widget class="QLineEdit" name="max_step_show">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>cur step</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>max step</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="4">
+          <widget class="QLineEdit" name="cur_step_show">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
       <item>
@@ -106,7 +155,7 @@ background:black;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>831</width>
+     <width>858</width>
      <height>22</height>
     </rect>
    </property>

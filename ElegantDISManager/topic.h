@@ -59,6 +59,7 @@ public:
     string content_;
     Timestamp lastPubTime_;
     std::set<TcpConnectionPtr> audiences_;
+    
 };
 
 }

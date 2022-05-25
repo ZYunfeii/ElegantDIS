@@ -48,7 +48,6 @@ public:
     std::map<string, Topic> topics_;
     TcpServer *server_;
     EventLoop *loop_;
-
 };
 
 }

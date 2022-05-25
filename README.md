@@ -24,6 +24,8 @@
 
 项目依赖Muduo网络库：https://github.com/chenshuo/muduo ，以及QT5。这二者的安装较为简单，不再赘述。另外,消息的传输采用JSON,依赖库Jsoncpp.
 
+**Muduo库在编译前将net/TcpServer中的connections_改为public。**
+
 测试系统：Ubuntu18.04
 
 ## qmake编译

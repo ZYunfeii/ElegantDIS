@@ -4,11 +4,11 @@
 SettingWidget::SettingWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SettingWidget),
-    max_steps_(10)
+    max_steps_(1000)
 {
     ui->setupUi(this);
     connect(ui->confirm_button, &QPushButton::clicked, this, &SettingWidget::handle_para);
-    ui->max_total_steps->setText("10");
+    ui->max_total_steps->setText("1000");
 }
 
 void SettingWidget::handle_para() {

@@ -8,7 +8,7 @@ PubSubServer::PubSubServer(){
 void PubSubServer::start() {
     loop_ = new EventLoop;
     server_ = new TcpServer(loop_, InetAddress(9999), "PubSubServer");
-
+    server_->setThreadNum(4);
     server_->setConnectionCallback(std::bind(&PubSubServer::onConnection, this, _1));
     server_->setMessageCallback(std::bind(&PubSubServer::onMessage, this, _1, _2, _3));
     loop_->runEvery(5.0, std::bind(&PubSubServer::timePublish, this));
@@ -38,7 +38,10 @@ void PubSubServer::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestam
         string content;
         result = parseMessage(buf, &cmd, &topic, &content); // 对buf中收到的字节流进行处理
         if (result == kSuccess) { // 处理到一个满足格式要求的指令
-            if (cmd == "pub") {  // 如果指令是客户节点的发布指令
+            if (cmd == "nodename") {
+                ConnectionSubscription* connSub = boost::any_cast<ConnectionSubscription>(conn->getMutableContext());
+                connSub->insert("nodename " + content);
+            } else if (cmd == "pub") {  // 如果指令是客户节点的发布指令
                 doPublish(conn->name(), topic, content, receiveTime);
             }
             else if (cmd == "sub") { // 如果指令是客户节点的订阅指令
@@ -78,6 +81,7 @@ void PubSubServer::doSubscribe(const TcpConnectionPtr& conn, const string& topic
     connSub->insert(topic);
     getTopic(topic).add(conn);
     emit log_msg(QString::fromStdString("[Sub]:" + conn->name() + "->" + topic));
+    emit update_topic_sig();
 }
 
 void PubSubServer::doUnsubscribe(const TcpConnectionPtr& conn, const string& topic) {
@@ -86,13 +90,17 @@ void PubSubServer::doUnsubscribe(const TcpConnectionPtr& conn, const string& top
     // topic could be the one to be destroyed, so don't use it after erasing.
     ConnectionSubscription* connSub = boost::any_cast<ConnectionSubscription>(conn->getMutableContext());
     connSub->erase(topic);
-    emit log_msg(QString::fromStdString("[Unsub]:" + topic)); // mark: in this time, the conn is removed! Do not use conn->name!!
+
+    auto it_space = std::find(topic.begin(), topic.end(), ' ');
+    if (it_space == topic.end()) {
+        emit log_msg(QString::fromStdString("[Unsub]:" + topic)); // mark: in this time, the conn is removed! Do not use conn->name!!
+    }
+    emit update_topic_sig();
 }
 
 void PubSubServer::doPublish(const string& source, const string& topic, const string& content,Timestamp time) {
     getTopic(topic).publish(content, time);
     emit log_msg(QString::fromStdString("[Pub]:" + source + "->" + topic + ":" + content));
-    emit update_topic_sig();
 }
 
 Topic &PubSubServer::getTopic(const string& topic) {

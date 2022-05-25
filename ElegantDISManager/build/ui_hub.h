@@ -14,9 +14,12 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QGridLayout>
+#include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLCDNumber>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
@@ -36,7 +39,7 @@ class Ui_Hub
 public:
     QAction *setting_button;
     QWidget *centralwidget;
-    QGridLayout *gridLayout;
+    QGridLayout *gridLayout_3;
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout_3;
     QSpacerItem *horizontalSpacer;
@@ -45,10 +48,18 @@ public:
     QHBoxLayout *horizontalLayout;
     QTreeView *topic_tree_view;
     QTextBrowser *sim_text_browser;
-    QHBoxLayout *horizontalLayout_2;
+    QGroupBox *groupBox;
+    QGridLayout *gridLayout;
     QPushButton *start_sim_button;
     QPushButton *init_sim_button;
     QPushButton *pause_continue;
+    QPushButton *stop_sim_button;
+    QGroupBox *groupBox_2;
+    QGridLayout *gridLayout_2;
+    QLineEdit *max_step_show;
+    QLabel *label_2;
+    QLabel *label;
+    QLineEdit *cur_step_show;
     QProgressBar *sim_process_bar;
     QMenuBar *menubar;
     QMenu *setting;
@@ -58,13 +69,13 @@ public:
     {
         if (Hub->objectName().isEmpty())
             Hub->setObjectName(QStringLiteral("Hub"));
-        Hub->resize(831, 611);
+        Hub->resize(858, 708);
         setting_button = new QAction(Hub);
         setting_button->setObjectName(QStringLiteral("setting_button"));
         centralwidget = new QWidget(Hub);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
-        gridLayout = new QGridLayout(centralwidget);
-        gridLayout->setObjectName(QStringLiteral("gridLayout"));
+        gridLayout_3 = new QGridLayout(centralwidget);
+        gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         horizontalLayout_3 = new QHBoxLayout();
@@ -107,25 +118,61 @@ public:
 
         verticalLayout->addLayout(horizontalLayout);
 
-        horizontalLayout_2 = new QHBoxLayout();
-        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        start_sim_button = new QPushButton(centralwidget);
+        groupBox = new QGroupBox(centralwidget);
+        groupBox->setObjectName(QStringLiteral("groupBox"));
+        gridLayout = new QGridLayout(groupBox);
+        gridLayout->setObjectName(QStringLiteral("gridLayout"));
+        start_sim_button = new QPushButton(groupBox);
         start_sim_button->setObjectName(QStringLiteral("start_sim_button"));
 
-        horizontalLayout_2->addWidget(start_sim_button);
+        gridLayout->addWidget(start_sim_button, 0, 0, 1, 1);
 
-        init_sim_button = new QPushButton(centralwidget);
+        init_sim_button = new QPushButton(groupBox);
         init_sim_button->setObjectName(QStringLiteral("init_sim_button"));
 
-        horizontalLayout_2->addWidget(init_sim_button);
+        gridLayout->addWidget(init_sim_button, 0, 1, 1, 1);
 
-
-        verticalLayout->addLayout(horizontalLayout_2);
-
-        pause_continue = new QPushButton(centralwidget);
+        pause_continue = new QPushButton(groupBox);
         pause_continue->setObjectName(QStringLiteral("pause_continue"));
 
-        verticalLayout->addWidget(pause_continue);
+        gridLayout->addWidget(pause_continue, 1, 0, 1, 1);
+
+        stop_sim_button = new QPushButton(groupBox);
+        stop_sim_button->setObjectName(QStringLiteral("stop_sim_button"));
+
+        gridLayout->addWidget(stop_sim_button, 1, 1, 1, 1);
+
+
+        verticalLayout->addWidget(groupBox);
+
+        groupBox_2 = new QGroupBox(centralwidget);
+        groupBox_2->setObjectName(QStringLiteral("groupBox_2"));
+        gridLayout_2 = new QGridLayout(groupBox_2);
+        gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
+        max_step_show = new QLineEdit(groupBox_2);
+        max_step_show->setObjectName(QStringLiteral("max_step_show"));
+        max_step_show->setReadOnly(true);
+
+        gridLayout_2->addWidget(max_step_show, 1, 2, 1, 1);
+
+        label_2 = new QLabel(groupBox_2);
+        label_2->setObjectName(QStringLiteral("label_2"));
+
+        gridLayout_2->addWidget(label_2, 1, 3, 1, 1);
+
+        label = new QLabel(groupBox_2);
+        label->setObjectName(QStringLiteral("label"));
+
+        gridLayout_2->addWidget(label, 1, 1, 1, 1);
+
+        cur_step_show = new QLineEdit(groupBox_2);
+        cur_step_show->setObjectName(QStringLiteral("cur_step_show"));
+        cur_step_show->setReadOnly(true);
+
+        gridLayout_2->addWidget(cur_step_show, 1, 4, 1, 1);
+
+
+        verticalLayout->addWidget(groupBox_2);
 
         sim_process_bar = new QProgressBar(centralwidget);
         sim_process_bar->setObjectName(QStringLiteral("sim_process_bar"));
@@ -134,12 +181,12 @@ public:
         verticalLayout->addWidget(sim_process_bar);
 
 
-        gridLayout->addLayout(verticalLayout, 0, 0, 1, 1);
+        gridLayout_3->addLayout(verticalLayout, 0, 0, 1, 1);
 
         Hub->setCentralWidget(centralwidget);
         menubar = new QMenuBar(Hub);
         menubar->setObjectName(QStringLiteral("menubar"));
-        menubar->setGeometry(QRect(0, 0, 831, 22));
+        menubar->setGeometry(QRect(0, 0, 858, 22));
         setting = new QMenu(menubar);
         setting->setObjectName(QStringLiteral("setting"));
         Hub->setMenuBar(menubar);
@@ -159,9 +206,14 @@ public:
     {
         Hub->setWindowTitle(QApplication::translate("Hub", "Hub", Q_NULLPTR));
         setting_button->setText(QApplication::translate("Hub", "setting", Q_NULLPTR));
+        groupBox->setTitle(QApplication::translate("Hub", "Control", Q_NULLPTR));
         start_sim_button->setText(QApplication::translate("Hub", "start sim", Q_NULLPTR));
         init_sim_button->setText(QApplication::translate("Hub", "init sim", Q_NULLPTR));
         pause_continue->setText(QApplication::translate("Hub", "pause_continue", Q_NULLPTR));
+        stop_sim_button->setText(QApplication::translate("Hub", "stop sim", Q_NULLPTR));
+        groupBox_2->setTitle(QApplication::translate("Hub", "Para", Q_NULLPTR));
+        label_2->setText(QApplication::translate("Hub", "cur step", Q_NULLPTR));
+        label->setText(QApplication::translate("Hub", "max step", Q_NULLPTR));
         setting->setTitle(QApplication::translate("Hub", "Setting", Q_NULLPTR));
     } // retranslateUi
 

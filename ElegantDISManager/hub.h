@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QThread>
 #include <QStandardItemModel>
+#include <iostream>
+
 
 #include "pubsubserver.h"
 #include "settingwidget.h"
@@ -35,6 +37,7 @@ public slots:
     void handle_synpub_sig();
     void handle_initover_sig();
     void pause_continue();
+    void stop_sim();
 
 private:
     Ui::Hub *ui;
@@ -52,9 +55,11 @@ private:
     SettingWidget *setting_widget_;
 
     enum {
-        PauseSim,
-        ContinueSim
-    } key_pause_continue_;
+        PAUSESIM,
+        CONTINUESIM,
+        STOPSIM,
+        INITOVER
+    } hub_state_;
 
     tools::Timer *timer_;
 };

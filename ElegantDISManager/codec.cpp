@@ -12,10 +12,10 @@ ParseResult pubsub::parseMessage(Buffer* buf, string* cmd, string* topic, string
         const char* space = std::find(buf->peek(), crlf, ' ');
         if (space != crlf)
         {
-            cmd->assign(buf->peek(), space);
-            topic->assign(space+1, crlf);
+            cmd->assign(buf->peek(), space);    
             if (*cmd == "pub")
             {
+                topic->assign(space+1, crlf);
                 const char* start = crlf + 2;
                 crlf = buf->findCRLF(start);
                 if (crlf)
@@ -28,6 +28,14 @@ ParseResult pubsub::parseMessage(Buffer* buf, string* cmd, string* topic, string
                 {
                     result = kContinue;
                 }
+            } else if (*cmd == "nodename") {
+                content->assign(space+1, crlf);
+                buf->retrieveUntil(crlf+2);
+                result = kSuccess;
+            } else if (*cmd == "sub") {
+                topic->assign(space+1, crlf);
+                buf->retrieveUntil(crlf+2);
+                result = kSuccess;
             }
             else
             {
