@@ -29,7 +29,8 @@ SOURCES += \
 HEADERS += \
     codec.h \
     interface.h \
-    pubsub.h
+    pubsub.h \
+    threadpool.h
 
 FORMS += \
     interface.ui

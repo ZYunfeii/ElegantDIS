@@ -151,7 +151,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		../../ElegantDISClient.pro ../codec.h \
 		../interface.h \
-		../pubsub.h ../codec.cpp \
+		../pubsub.h \
+		../threadpool.h ../codec.cpp \
 		../interface.cpp \
 		../main.cpp \
 		../pubsub.cpp
@@ -181,7 +182,7 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../codec.h ../interface.h ../pubsub.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../codec.h ../interface.h ../pubsub.h ../threadpool.h $(DISTDIR)/
 	$(COPY_FILE) --parents ../codec.cpp ../interface.cpp ../main.cpp ../pubsub.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../interface.ui $(DISTDIR)/
 
@@ -219,6 +220,7 @@ compiler_moc_header_make_all: debug/moc_interface.cpp debug/moc_pubsub.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) debug/moc_interface.cpp debug/moc_pubsub.cpp
 debug/moc_interface.cpp: ../pubsub.h \
+		../threadpool.h \
 		../interface.h \
 		debug/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
@@ -253,11 +255,13 @@ debug/codec.o: ../codec.cpp ../codec.h
 
 debug/interface.o: ../interface.cpp ../interface.h \
 		../pubsub.h \
+		../threadpool.h \
 		ui_interface.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/interface.o ../interface.cpp
 
 debug/main.o: ../main.cpp ../interface.h \
-		../pubsub.h
+		../pubsub.h \
+		../threadpool.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/main.o ../main.cpp
 
 debug/pubsub.o: ../pubsub.cpp ../codec.h \

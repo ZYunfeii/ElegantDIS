@@ -18,11 +18,17 @@
 
 1. 填入管理节点IP和Port后向管理节点进行连接；
 2. 日志显示栏显示日志信息；
-   ![在这里插入图片描述](README.assets/89326c5f108149988a9e75ad77db364f.png)
+3. 保存仿真话题随时间变化数据功能；
+
+![在这里插入图片描述](README.assets/89326c5f108149988a9e75ad77db364f.png)
 
 # 项目配置
 
-项目依赖Muduo网络库：https://github.com/chenshuo/muduo ，以及QT5。这二者的安装较为简单，不再赘述。另外,消息的传输采用JSON,依赖库Jsoncpp.
+项目依赖:
+
+1. Muduo网络库：https://github.com/chenshuo/muduo 
+2. QT5
+3. Jsoncpp
 
 **Muduo库在编译前将net/TcpServer中的connections_改为public。**
 
@@ -37,7 +43,7 @@ qmake ..
 make debug
 ```
 
-完成编译。
+完成编译。build目录下执行二进制文件即可。
 
 ## IDE编译
 
@@ -47,11 +53,13 @@ IDE采用vscode，用qtcreator也可以。
 
 # 项目原理
 
+## 同步逻辑
+
 总体逻辑图如下:
 
 ![image-20220520191503451](./README.assets/image-20220520191503451.png)
 
-项目基于Muduo网络库，受其中examples/hub代码启发，正巧实验室只有Win下的分布式系统，想自己开发一个Linux下的。
+项目基于Muduo网络库，受其中examples/hub代码启发：
 
 1. 客户端采用QT搭建，主线程负责显示，子线程用于网络监听和一系列指令接受与发布逻辑；
 2. 客户节点通过回调绑定设置仿真步进函数和初始化函数；
@@ -73,7 +81,10 @@ void PubSubServer::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestam
         string content;
         result = parseMessage(buf, &cmd, &topic, &content); // 对buf中收到的字节流进行处理
         if (result == kSuccess) { // 处理到一个满足格式要求的指令
-            if (cmd == "pub") {  // 如果指令是客户节点的发布指令
+            if (cmd == "nodename") {
+                ConnectionSubscription* connSub = boost::any_cast<ConnectionSubscription>(conn->getMutableContext());
+                connSub->insert("nodename " + content);
+            } else if (cmd == "pub") {  // 如果指令是客户节点的发布指令
                 doPublish(conn->name(), topic, content, receiveTime);
             }
             else if (cmd == "sub") { // 如果指令是客户节点的订阅指令
@@ -87,7 +98,7 @@ void PubSubServer::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestam
             }
             else if (cmd == "initover") {
                 // todo
-                // emit init_over_sig();
+                emit init_over_sig();
             }
             else if (cmd == "synpubover") {
                 emit synpub_over_sig();
@@ -116,17 +127,24 @@ void PubSubClient::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestam
         result = parseMessage(buf, &cmd, &topic, &content);
         if (result == kSuccess) {
             if (cmd == "pub" && subscribeCallback_) {
+                // pub + " " + topic + "\r\n" + content + "\r\n"
                 subscribeCallback_(topic, content, receiveTime);
             }
             if (cmd == "step") {
+                // step + " " + sim_time + "\r\n"
                 emit log_msg(QString("[Info] Step cmd received!"));
-                stepCallback_();
+                static Json::Reader rd;
+                Json::Value sim_time_json;
+                rd.parse(content, sim_time_json);
+                stepCallback_(sim_time_json["sim_time"].asDouble());
                 send("stepover\r\n");
+                emit update_pubsub_data_sig();
             }
             if (cmd == "init") {
                 emit log_msg(QString("[Info] Init cmd received!"));
                 initCallback_();
                 send("initover\r\n");
+                emit update_pubsub_data_sig();
             }
             if (cmd == "synpub") {
                 emit synpub_sig();
@@ -140,3 +158,7 @@ void PubSubClient::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestam
 ```
 
 可以看到，当接收到step或者init命令时，程序将执行上层注册的回调函数。并向管理节点发布over指令。其中emit是为了让qt主线程相应并显示相关日志信息。
+
+## 保存话题
+
+采用在线保存的方式，即边仿真边保存，但io操作可能会拖垮主线程，采用线程池方式将数据存储操作打包提交给池，实现高效存储。

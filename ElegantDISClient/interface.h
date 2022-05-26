@@ -5,8 +5,10 @@
 #include <QThread>
 #include <QVariant>
 #include <map>
+# include <fstream>
 #include "jsoncpp/json/json.h"
 #include "pubsub.h"
+#include "threadpool.h"
 
 
 namespace Ui {
@@ -44,7 +46,7 @@ private:
     void step_func(double sim_time); // 仿真步进函数
     void init_func(); // 仿真初始化函数
     void topic_init();
-
+    void save_sim_trace(std::string data);
     
 
 private:
@@ -56,6 +58,9 @@ private:
     std::map<std::string, Json::Value> subscribe_topic_json_map_;
 
     std::size_t syn_topic_count_; // 记录每一步仿真中已经更新的订阅话题数量
+
+    std::ofstream ofs_save;
+    std::unique_ptr<ThreadPool> thread_pool_;
 };
 
 #endif // INTERFACE_H

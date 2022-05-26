@@ -30,7 +30,7 @@ QT_BEGIN_NAMESPACE
 class Ui_interface
 {
 public:
-    QGridLayout *gridLayout;
+    QGridLayout *gridLayout_2;
     QVBoxLayout *verticalLayout;
     QFormLayout *formLayout;
     QLabel *label;
@@ -40,6 +40,13 @@ public:
     QHBoxLayout *horizontalLayout_2;
     QPushButton *connect_button;
     QLCDNumber *time_lcd;
+    QGridLayout *gridLayout;
+    QLineEdit *save_topic;
+    QLabel *label_4;
+    QLineEdit *save_path;
+    QLabel *label_5;
+    QLineEdit *data_name;
+    QLabel *label_3;
     QHBoxLayout *horizontalLayout;
     QTextBrowser *info_browser;
     QVBoxLayout *verticalLayout_2;
@@ -50,9 +57,9 @@ public:
     {
         if (interface->objectName().isEmpty())
             interface->setObjectName(QStringLiteral("interface"));
-        interface->resize(611, 453);
-        gridLayout = new QGridLayout(interface);
-        gridLayout->setObjectName(QStringLiteral("gridLayout"));
+        interface->resize(761, 654);
+        gridLayout_2 = new QGridLayout(interface);
+        gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         formLayout = new QFormLayout();
@@ -84,6 +91,8 @@ public:
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
         connect_button = new QPushButton(interface);
         connect_button->setObjectName(QStringLiteral("connect_button"));
+        connect_button->setStyleSheet(QLatin1String("border-radius: 6px;\n"
+"background-color: rgb(165,165,165);"));
 
         horizontalLayout_2->addWidget(connect_button);
 
@@ -102,7 +111,42 @@ public:
         verticalLayout->addLayout(horizontalLayout_2);
 
 
-        gridLayout->addLayout(verticalLayout, 0, 0, 1, 1);
+        gridLayout_2->addLayout(verticalLayout, 0, 0, 1, 1);
+
+        gridLayout = new QGridLayout();
+        gridLayout->setObjectName(QStringLiteral("gridLayout"));
+        save_topic = new QLineEdit(interface);
+        save_topic->setObjectName(QStringLiteral("save_topic"));
+
+        gridLayout->addWidget(save_topic, 1, 1, 1, 1);
+
+        label_4 = new QLabel(interface);
+        label_4->setObjectName(QStringLiteral("label_4"));
+
+        gridLayout->addWidget(label_4, 1, 0, 1, 1);
+
+        save_path = new QLineEdit(interface);
+        save_path->setObjectName(QStringLiteral("save_path"));
+
+        gridLayout->addWidget(save_path, 0, 1, 1, 1);
+
+        label_5 = new QLabel(interface);
+        label_5->setObjectName(QStringLiteral("label_5"));
+
+        gridLayout->addWidget(label_5, 2, 0, 1, 1);
+
+        data_name = new QLineEdit(interface);
+        data_name->setObjectName(QStringLiteral("data_name"));
+
+        gridLayout->addWidget(data_name, 2, 1, 1, 1);
+
+        label_3 = new QLabel(interface);
+        label_3->setObjectName(QStringLiteral("label_3"));
+
+        gridLayout->addWidget(label_3, 0, 0, 1, 1);
+
+
+        gridLayout_2->addLayout(gridLayout, 0, 1, 1, 1);
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
@@ -127,7 +171,7 @@ public:
         horizontalLayout->addLayout(verticalLayout_2);
 
 
-        gridLayout->addLayout(horizontalLayout, 1, 0, 1, 1);
+        gridLayout_2->addLayout(horizontalLayout, 1, 0, 1, 2);
 
 
         retranslateUi(interface);
@@ -143,6 +187,10 @@ public:
         label_2->setText(QApplication::translate("interface", "HostPort:", Q_NULLPTR));
         port_edit->setText(QApplication::translate("interface", "9999", Q_NULLPTR));
         connect_button->setText(QApplication::translate("interface", "connect", Q_NULLPTR));
+        label_4->setText(QApplication::translate("interface", "save topic", Q_NULLPTR));
+        label_5->setText(QApplication::translate("interface", "data name", Q_NULLPTR));
+        data_name->setText(QString());
+        label_3->setText(QApplication::translate("interface", "save path", Q_NULLPTR));
     } // retranslateUi
 
 };
