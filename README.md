@@ -4,7 +4,7 @@
 
 # 项目效果展示
 
-![](./README.assets/DIS.gif)
+![](./README.assets/DIS2.gif)
 
 ## 管理节点
 
