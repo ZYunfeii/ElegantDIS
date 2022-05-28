@@ -61,10 +61,17 @@ void Hub::init_cmd() {
         return;
     }
     for (auto it = pubsubserver_->server_->connections_.begin(); it != pubsubserver_->server_->connections_.end(); it++){
-        std::string cmd = "init\r\n";
+        std::string cmd = "init " + make_init_info_json() + "\r\n";
         it->second->send(cmd);
     }
     hub_state_ = INITOVER; // init the flag 
+}
+
+std::string Hub::make_init_info_json() {
+    Json::Value init_val;
+    init_val["max_sim_steps"] = (int)max_sim_steps_;
+    Json::FastWriter w;
+    return w.write(init_val);
 }
 
 void Hub::step_cmd(){

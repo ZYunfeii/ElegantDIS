@@ -21,7 +21,7 @@ public:
                                 muduo::Timestamp)> SubscribeCallback;
 
     typedef std::function<void(double)> StepCallback; // step callback func for top layer in DIS
-    typedef std::function<void(void)> InitCallback; // init callback func for top layer in DIS
+    typedef std::function<void(std::string)> InitCallback; // init callback func for top layer in DIS
 
     PubSubClient();
 signals:

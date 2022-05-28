@@ -124,21 +124,29 @@ public:
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
         start_sim_button = new QPushButton(groupBox);
         start_sim_button->setObjectName(QStringLiteral("start_sim_button"));
+        start_sim_button->setStyleSheet(QLatin1String("border-radius: 6px;\n"
+"background-color: rgb(165,165,165);"));
 
         gridLayout->addWidget(start_sim_button, 0, 0, 1, 1);
 
         init_sim_button = new QPushButton(groupBox);
         init_sim_button->setObjectName(QStringLiteral("init_sim_button"));
+        init_sim_button->setStyleSheet(QLatin1String("border-radius: 6px;\n"
+"background-color: rgb(165,165,165);"));
 
         gridLayout->addWidget(init_sim_button, 0, 1, 1, 1);
 
         pause_continue = new QPushButton(groupBox);
         pause_continue->setObjectName(QStringLiteral("pause_continue"));
+        pause_continue->setStyleSheet(QLatin1String("border-radius: 6px;\n"
+"background-color: rgb(165,165,165);"));
 
         gridLayout->addWidget(pause_continue, 1, 0, 1, 1);
 
         stop_sim_button = new QPushButton(groupBox);
         stop_sim_button->setObjectName(QStringLiteral("stop_sim_button"));
+        stop_sim_button->setStyleSheet(QLatin1String("border-radius: 6px;\n"
+"background-color: rgb(165,165,165);"));
 
         gridLayout->addWidget(stop_sim_button, 1, 1, 1, 1);
 

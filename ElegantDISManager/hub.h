@@ -27,6 +27,7 @@ public:
 
 signals:
     void start_server_sig();
+
 public slots:
     void handle_log_msg(QVariant);
     void update_topic_show();
@@ -38,6 +39,9 @@ public slots:
     void handle_initover_sig();
     void pause_continue();
     void stop_sim();
+
+public:
+    std::string make_init_info_json();
 
 private:
     Ui::Hub *ui;

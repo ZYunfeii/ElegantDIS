@@ -102,7 +102,7 @@ void PubSubClient::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestam
             }
             if (cmd == "init") {
                 emit log_msg(QString("[Info] Init cmd received!"));
-                initCallback_();
+                initCallback_(content);
                 send("initover\r\n");
                 emit update_pubsub_data_sig();
             }

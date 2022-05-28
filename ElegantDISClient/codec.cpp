@@ -33,6 +33,10 @@ ParseResult pubsub::parseMessage(Buffer* buf, string* cmd, string* topic, string
                 content->assign(space + 1, crlf); // 仿真时间
                 buf->retrieveUntil(crlf+2);
                 result = kSuccess;
+            } else if (*cmd == "init") {
+                content->assign(space + 1, crlf); // 仿真时间
+                buf->retrieveUntil(crlf+2);
+                result = kSuccess;
             }
             else
             {
@@ -43,10 +47,7 @@ ParseResult pubsub::parseMessage(Buffer* buf, string* cmd, string* topic, string
         else
         {
             cmd->assign(buf->peek(), space);
-            if (*cmd == "init") {
-                buf->retrieveUntil(crlf+2);
-                result = kSuccess;
-            } else if (*cmd == "synpub") {
+            if (*cmd == "synpub") {
                 buf->retrieveUntil(crlf+2);
                 result = kSuccess;
             }

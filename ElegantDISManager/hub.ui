@@ -73,6 +73,10 @@ background:black;</string>
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
           <widget class="QPushButton" name="start_sim_button">
+           <property name="styleSheet">
+            <string notr="true">border-radius: 6px;
+background-color: rgb(165,165,165);</string>
+           </property>
            <property name="text">
             <string>start sim</string>
            </property>
@@ -80,6 +84,10 @@ background:black;</string>
          </item>
          <item row="0" column="1">
           <widget class="QPushButton" name="init_sim_button">
+           <property name="styleSheet">
+            <string notr="true">border-radius: 6px;
+background-color: rgb(165,165,165);</string>
+           </property>
            <property name="text">
             <string>init sim</string>
            </property>
@@ -87,6 +95,10 @@ background:black;</string>
          </item>
          <item row="1" column="0">
           <widget class="QPushButton" name="pause_continue">
+           <property name="styleSheet">
+            <string notr="true">border-radius: 6px;
+background-color: rgb(165,165,165);</string>
+           </property>
            <property name="text">
             <string>pause_continue</string>
            </property>
@@ -94,6 +106,10 @@ background:black;</string>
          </item>
          <item row="1" column="1">
           <widget class="QPushButton" name="stop_sim_button">
+           <property name="styleSheet">
+            <string notr="true">border-radius: 6px;
+background-color: rgb(165,165,165);</string>
+           </property>
            <property name="text">
             <string>stop sim</string>
            </property>
