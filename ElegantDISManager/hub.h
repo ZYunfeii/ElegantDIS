@@ -55,6 +55,7 @@ private:
     std::size_t total_sim_steps_;         // 总仿真步长
     std::size_t max_sim_steps_;            // 最大仿真步长
     std::size_t node_init_over_count_;     // 已经初始化完成的节点数量
+    bool free_simulation_;
 
     SettingWidget *setting_widget_;
 

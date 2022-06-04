@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_pubsub__PubSubClient_t {
-    QByteArrayData data[10];
-    char stringdata0[115];
+    QByteArrayData data[11];
+    char stringdata0[124];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -34,16 +34,17 @@ static const qt_meta_stringdata_pubsub__PubSubClient_t qt_meta_stringdata_pubsub
 QT_MOC_LITERAL(0, 0, 20), // "pubsub::PubSubClient"
 QT_MOC_LITERAL(1, 21, 7), // "log_msg"
 QT_MOC_LITERAL(2, 29, 0), // ""
-QT_MOC_LITERAL(3, 30, 17), // "update_topic_data"
-QT_MOC_LITERAL(4, 48, 10), // "topic_name"
-QT_MOC_LITERAL(5, 59, 10), // "topic_data"
-QT_MOC_LITERAL(6, 70, 10), // "synpub_sig"
-QT_MOC_LITERAL(7, 81, 22), // "update_pubsub_data_sig"
-QT_MOC_LITERAL(8, 104, 5), // "start"
-QT_MOC_LITERAL(9, 110, 4) // "stop"
+QT_MOC_LITERAL(3, 30, 8), // "init_msg"
+QT_MOC_LITERAL(4, 39, 17), // "update_topic_data"
+QT_MOC_LITERAL(5, 57, 10), // "topic_name"
+QT_MOC_LITERAL(6, 68, 10), // "topic_data"
+QT_MOC_LITERAL(7, 79, 10), // "synpub_sig"
+QT_MOC_LITERAL(8, 90, 22), // "update_pubsub_data_sig"
+QT_MOC_LITERAL(9, 113, 5), // "start"
+QT_MOC_LITERAL(10, 119, 4) // "stop"
 
     },
-    "pubsub::PubSubClient\0log_msg\0\0"
+    "pubsub::PubSubClient\0log_msg\0\0init_msg\0"
     "update_topic_data\0topic_name\0topic_data\0"
     "synpub_sig\0update_pubsub_data_sig\0"
     "start\0stop"
@@ -56,26 +57,28 @@ static const uint qt_meta_data_pubsub__PubSubClient[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       7,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       4,       // signalCount
+       5,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,   44,    2, 0x06 /* Public */,
-       3,    2,   47,    2, 0x06 /* Public */,
-       6,    0,   52,    2, 0x06 /* Public */,
-       7,    0,   53,    2, 0x06 /* Public */,
+       1,    1,   49,    2, 0x06 /* Public */,
+       3,    1,   52,    2, 0x06 /* Public */,
+       4,    2,   55,    2, 0x06 /* Public */,
+       7,    0,   60,    2, 0x06 /* Public */,
+       8,    0,   61,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       8,    0,   54,    2, 0x0a /* Public */,
-       9,    0,   55,    2, 0x0a /* Public */,
+       9,    0,   62,    2, 0x0a /* Public */,
+      10,    0,   63,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QVariant,    2,
-    QMetaType::Void, QMetaType::QVariant, QMetaType::QVariant,    4,    5,
+    QMetaType::Void, QMetaType::QVariant,    2,
+    QMetaType::Void, QMetaType::QVariant, QMetaType::QVariant,    5,    6,
     QMetaType::Void,
     QMetaType::Void,
 
@@ -93,11 +96,12 @@ void pubsub::PubSubClient::qt_static_metacall(QObject *_o, QMetaObject::Call _c,
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->log_msg((*reinterpret_cast< QVariant(*)>(_a[1]))); break;
-        case 1: _t->update_topic_data((*reinterpret_cast< QVariant(*)>(_a[1])),(*reinterpret_cast< QVariant(*)>(_a[2]))); break;
-        case 2: _t->synpub_sig(); break;
-        case 3: _t->update_pubsub_data_sig(); break;
-        case 4: _t->start(); break;
-        case 5: _t->stop(); break;
+        case 1: _t->init_msg((*reinterpret_cast< QVariant(*)>(_a[1]))); break;
+        case 2: _t->update_topic_data((*reinterpret_cast< QVariant(*)>(_a[1])),(*reinterpret_cast< QVariant(*)>(_a[2]))); break;
+        case 3: _t->synpub_sig(); break;
+        case 4: _t->update_pubsub_data_sig(); break;
+        case 5: _t->start(); break;
+        case 6: _t->stop(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -110,23 +114,30 @@ void pubsub::PubSubClient::qt_static_metacall(QObject *_o, QMetaObject::Call _c,
             }
         }
         {
-            typedef void (PubSubClient::*_t)(QVariant , QVariant );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&PubSubClient::update_topic_data)) {
+            typedef void (PubSubClient::*_t)(QVariant );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&PubSubClient::init_msg)) {
                 *result = 1;
                 return;
             }
         }
         {
-            typedef void (PubSubClient::*_t)();
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&PubSubClient::synpub_sig)) {
+            typedef void (PubSubClient::*_t)(QVariant , QVariant );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&PubSubClient::update_topic_data)) {
                 *result = 2;
                 return;
             }
         }
         {
             typedef void (PubSubClient::*_t)();
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&PubSubClient::update_pubsub_data_sig)) {
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&PubSubClient::synpub_sig)) {
                 *result = 3;
+                return;
+            }
+        }
+        {
+            typedef void (PubSubClient::*_t)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&PubSubClient::update_pubsub_data_sig)) {
+                *result = 4;
                 return;
             }
         }
@@ -158,13 +169,13 @@ int pubsub::PubSubClient::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 6)
+        if (_id < 7)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 6;
+        _id -= 7;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 6)
+        if (_id < 7)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 6;
+        _id -= 7;
     }
     return _id;
 }
@@ -177,22 +188,29 @@ void pubsub::PubSubClient::log_msg(QVariant _t1)
 }
 
 // SIGNAL 1
-void pubsub::PubSubClient::update_topic_data(QVariant _t1, QVariant _t2)
+void pubsub::PubSubClient::init_msg(QVariant _t1)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 
 // SIGNAL 2
-void pubsub::PubSubClient::synpub_sig()
+void pubsub::PubSubClient::update_topic_data(QVariant _t1, QVariant _t2)
 {
-    QMetaObject::activate(this, &staticMetaObject, 2, nullptr);
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 
 // SIGNAL 3
-void pubsub::PubSubClient::update_pubsub_data_sig()
+void pubsub::PubSubClient::synpub_sig()
 {
     QMetaObject::activate(this, &staticMetaObject, 3, nullptr);
+}
+
+// SIGNAL 4
+void pubsub::PubSubClient::update_pubsub_data_sig()
+{
+    QMetaObject::activate(this, &staticMetaObject, 4, nullptr);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE

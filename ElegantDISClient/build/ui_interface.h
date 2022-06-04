@@ -48,7 +48,9 @@ public:
     QLineEdit *data_name;
     QLabel *label_3;
     QHBoxLayout *horizontalLayout;
+    QVBoxLayout *verticalLayout_3;
     QTextBrowser *info_browser;
+    QTextBrowser *init_info_browser;
     QVBoxLayout *verticalLayout_2;
     QTextBrowser *topic_pub_data_browser;
     QTextBrowser *topic_sub_data_browser;
@@ -150,10 +152,26 @@ public:
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        verticalLayout_3 = new QVBoxLayout();
+        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
         info_browser = new QTextBrowser(interface);
         info_browser->setObjectName(QStringLiteral("info_browser"));
+        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(info_browser->sizePolicy().hasHeightForWidth());
+        info_browser->setSizePolicy(sizePolicy);
 
-        horizontalLayout->addWidget(info_browser);
+        verticalLayout_3->addWidget(info_browser);
+
+        init_info_browser = new QTextBrowser(interface);
+        init_info_browser->setObjectName(QStringLiteral("init_info_browser"));
+        init_info_browser->setMaximumSize(QSize(16777215, 100));
+
+        verticalLayout_3->addWidget(init_info_browser);
+
+
+        horizontalLayout->addLayout(verticalLayout_3);
 
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));

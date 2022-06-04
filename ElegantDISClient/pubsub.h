@@ -23,9 +23,10 @@ public:
     typedef std::function<void(double)> StepCallback; // step callback func for top layer in DIS
     typedef std::function<void(std::string)> InitCallback; // init callback func for top layer in DIS
 
-    PubSubClient();
+    PubSubClient(std::string node_name);
 signals:
     void log_msg(QVariant);
+    void init_msg(QVariant);
     void update_topic_data(QVariant topic_name, QVariant topic_data); // the signal which let interface update the subscribed data
     void synpub_sig();
     void update_pubsub_data_sig();
@@ -50,6 +51,7 @@ public:
 
     std::string ip_;
     uint16_t port_;
+    std::string node_name_;
 
 private:
     void onConnection(const muduo::net::TcpConnectionPtr& conn);

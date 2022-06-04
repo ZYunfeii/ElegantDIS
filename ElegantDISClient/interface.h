@@ -38,6 +38,7 @@ signals:
     void start_client_sig();
 public slots:
     void handle_log_msg(QVariant);
+    void handle_init_msg(QVariant);
     void handle_topic_update(QVariant topic_name, QVariant topic_data);
     void connect_hub();
     void handle_synpub();
@@ -77,6 +78,8 @@ private:
 
     std::size_t max_sim_steps_; // 根据管理节点的init指令设置
     std::size_t cur_sim_steps_;
+
+    bool free_simulation_;
 };
 
 #endif // INTERFACE_H

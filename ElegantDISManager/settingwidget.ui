@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>623</width>
-    <height>470</height>
+    <width>361</width>
+    <height>203</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,22 +20,37 @@
       <string>Settings</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="max_total_steps"/>
-      </item>
       <item row="0" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Max Total Steps:</string>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Max Total Steps:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="max_total_steps"/>
+        </item>
+       </layout>
       </item>
       <item row="1" column="0">
-       <widget class="QPushButton" name="confirm_button">
-        <property name="text">
-         <string>confirm</string>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QCheckBox" name="free_simulation">
+          <property name="text">
+           <string>Free simulation</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="confirm_button">
+          <property name="text">
+           <string>confirm</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>

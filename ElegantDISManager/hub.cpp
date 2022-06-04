@@ -11,6 +11,7 @@ Hub::Hub(QWidget *parent)
     , total_sim_steps_(0)
     , max_sim_steps_(10)
     , node_init_over_count_(0)
+    , free_simulation_(0)
     , setting_widget_(new SettingWidget)
     , timer_(new tools::Timer)
 {
@@ -49,13 +50,26 @@ Hub::Hub(QWidget *parent)
 }
 
 void Hub::init_cmd() {
-    max_sim_steps_ = this->setting_widget_->get_max_steps(); // 从setting窗口获取仿真参数
-    ui->max_step_show->setText(QString::number(max_sim_steps_));
+    free_simulation_ = this->setting_widget_->if_free_simulation();
+    if (!free_simulation_) {
+        max_sim_steps_ = this->setting_widget_->get_max_steps(); // 从setting窗口获取仿真参数
+        ui->max_step_show->setText(QString::number(max_sim_steps_));
+        handle_sim_msg(QString("[Info] Free simulation:False"));
+        handle_sim_msg(QString("[Info] Max sim steps:%1").arg(max_sim_steps_));
+    } else {
+        max_sim_steps_ = INT64_MAX;
+        ui->max_step_show->setText("Inf");
+        ui->sim_process_bar->setValue(100);
+        handle_sim_msg(QString("[Info] Free simulation:True"));
+        handle_sim_msg(QString("[Info] Max sim steps:Inf"));
+    }
+    
     total_sim_steps_ = 0; // init the sim states
     ui->time_lcd->display("00:00:00.000"); // time lcd init
     timer_->stop_time(); // 保证timer_是处在stop状态
     
-    handle_sim_msg(QString("[Info] max sim steps:%1").arg(max_sim_steps_));
+    
+    
     if (pubsubserver_->server_->connections_.empty()) {
         handle_log_msg(QString("No simnode!"));
         return;
@@ -70,6 +84,7 @@ void Hub::init_cmd() {
 std::string Hub::make_init_info_json() {
     Json::Value init_val;
     init_val["max_sim_steps"] = (int)max_sim_steps_;
+    init_val["free_simulation"] = free_simulation_;
     Json::FastWriter w;
     return w.write(init_val);
 }
@@ -118,7 +133,8 @@ void Hub::step_cmd(){
     }
     handle_sim_msg(QString("[Info]:Current Steps:%1").arg(total_sim_steps_));
     ui->cur_step_show->setText(QString::number(total_sim_steps_));
-    ui->sim_process_bar->setValue(static_cast<double>(total_sim_steps_) / max_sim_steps_ * 100);
+    if (!free_simulation_) ui->sim_process_bar->setValue(static_cast<double>(total_sim_steps_) / max_sim_steps_ * 100);
+    else ui->sim_process_bar->setValue(100);
     total_sim_steps_++;
     
 }

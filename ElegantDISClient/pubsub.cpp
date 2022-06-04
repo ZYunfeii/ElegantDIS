@@ -20,15 +20,16 @@ void PubSubClient::connection(PubSubClient *client) {
     }
 }
 
-PubSubClient::PubSubClient() {
+PubSubClient::PubSubClient(std::string node_name) {
     qRegisterMetaType<QVariant>("QVariant");
     ip_ = "127.0.0.1"; 
     port_ = 9999;     
+    node_name_ = node_name;
 }
 
 void PubSubClient::start() {
     loop_ = new EventLoop;
-    client_ = new TcpClient(loop_, InetAddress(ip_, port_), "SimNode");
+    client_ = new TcpClient(loop_, InetAddress(ip_, port_), node_name_);
     client_->setConnectionCallback(std::bind(&PubSubClient::onConnection, this, _1));
     client_->setMessageCallback(std::bind(&PubSubClient::onMessage, this, _1, _2, _3));
 
@@ -102,6 +103,7 @@ void PubSubClient::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestam
             }
             if (cmd == "init") {
                 emit log_msg(QString("[Info] Init cmd received!"));
+                emit init_msg(QString::fromStdString(content));
                 initCallback_(content);
                 send("initover\r\n");
                 emit update_pubsub_data_sig();

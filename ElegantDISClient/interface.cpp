@@ -5,8 +5,9 @@ interface::interface(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::interface)
   , thread_(new QThread())
-  , pubsubclient_(new pubsub::PubSubClient)
+  , pubsubclient_(new pubsub::PubSubClient("SimNode")) // 节点名称
   , syn_topic_count_(0)
+  , free_simulation_(0)
   , thread_pool_(new ThreadPool(4))
 {
     ui->setupUi(this);
@@ -16,6 +17,7 @@ interface::interface(QWidget *parent) :
     connect(pubsubclient_, &pubsub::PubSubClient::update_topic_data, this, &interface::handle_topic_update); // topic有新值需要更新
     connect(pubsubclient_, &pubsub::PubSubClient::synpub_sig, this, &interface::handle_synpub); // 发布topic新值
     connect(pubsubclient_, &pubsub::PubSubClient::update_pubsub_data_sig, this, &interface::update_pubsub_data_browser); // 更新topic显示栏
+    connect(pubsubclient_, &pubsub::PubSubClient::init_msg, this, &interface::handle_init_msg); // 更新初始化信息显示栏
 
     pubsubclient_->setStepCallback(std::bind(&interface::step_func, this, std::placeholders::_1)); // set the step callback for simnode
     pubsubclient_->setInitCallback(std::bind(&interface::init_func, this, std::placeholders::_1)); // set the init callback for simnode
@@ -98,7 +100,9 @@ void interface::setting_init(std::string init_setting) {
     Json::Value init_val;
     rd.parse(init_setting, init_val);
     max_sim_steps_ = init_val["max_sim_steps"].asInt();
-    save_cache_max_size_ = max_sim_steps_ / 10; // 设置缓存水位线
+    free_simulation_ = init_val["free_simulation"].asBool();
+    if (free_simulation_) save_cache_max_size_ = 100;
+    else save_cache_max_size_ = max_sim_steps_ / 10; // 设置缓存水位线
     cur_sim_steps_ = 0;
 
     dir_path_ = ui->save_path->text().toStdString();
@@ -170,6 +174,15 @@ void interface::handle_synpub() {
         std::string json = w.write(it->second);
         this->pubsubclient_->publish(it->first, json);
     }
+}
+
+void interface::handle_init_msg(QVariant init_info) {
+    QString msg_rev = init_info.value<QString>();
+    std::string init_json_str = msg_rev.toStdString();
+    Json::Reader rd;
+    Json::Value init_val;
+    rd.parse(init_json_str, init_val);
+    ui->init_info_browser->setText(QString::fromStdString(init_val.toStyledString()));
 }
 
 

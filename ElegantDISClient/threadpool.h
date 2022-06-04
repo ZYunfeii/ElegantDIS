@@ -52,6 +52,10 @@ public:
         pool_->cond.notify_one(); // 生产者 唤醒一个线程处理 不存在锁竞争
     }
 
+    int getTaskSizeInPool() {
+        return pool_->tasks.size();
+    }
+
 private:
     struct Pool {
         std::mutex mtx;
