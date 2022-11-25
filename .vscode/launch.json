@@ -1,0 +1,45 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "run manager",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/ElegantDISManager/build/ElegantDISManager",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}/ElegantDISManager/build",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ],
+      "preLaunchTask": "Build Manager"
+    },
+    {
+      "name": "run client",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/ElegantDISClient/build/ElegantDISClient",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}/ElegantDISClient/build",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ],
+      "preLaunchTask": "Build Client"
+    }
+  ]
+}

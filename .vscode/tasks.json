@@ -1,0 +1,17 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Manager",                              // build任务
+            "type": "shell",
+            // "command": "make -f Makefile"
+            "command" : "cd ./ElegantDISManager/build && qmake .. && make debug"
+        },
+        {
+            "label": "Build Client",                              // build任务
+            "type": "shell",
+            // "command": "make -f Makefile"
+            "command" : "cd ./ElegantDISClient/build && qmake .. && make debug"
+        }
+    ]
+}

@@ -1,5 +1,5 @@
-#include "hub.h"
 #include "ui_hub.h"
+#include "hub.h"
 
 Hub::Hub(QWidget *parent)
     : QMainWindow(parent)
