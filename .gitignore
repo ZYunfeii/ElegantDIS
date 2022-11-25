@@ -1,2 +1,2 @@
-/ElegantDISClient/build/
-/ElegantDISManager/build/
+/ElegantDISClient/build/*
+/ElegantDISManager/build/*
