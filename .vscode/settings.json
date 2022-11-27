@@ -90,6 +90,9 @@
       "cfenv": "cpp",
       "cinttypes": "cpp",
       "typeindex": "cpp",
-      "typeinfo": "cpp"
+      "typeinfo": "cpp",
+      "condition_variable": "cpp",
+      "random": "cpp",
+      "mutex": "cpp"
     }
   }

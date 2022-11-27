@@ -12,6 +12,12 @@
             "type": "shell",
             // "command": "make -f Makefile"
             "command" : "cd ./ElegantDISClient/build && qmake .. && make debug"
+        },
+        {
+            "label": "Build Client(no gui)",                              // build任务
+            "type": "shell",
+            // "command": "make -f Makefile"
+            "command" : "cd ./DISClient(NoGUI)/build && cmake .. && make"
         }
     ]
 }

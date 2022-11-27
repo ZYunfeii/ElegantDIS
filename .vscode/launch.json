@@ -40,6 +40,26 @@
         }
       ],
       "preLaunchTask": "Build Client"
+    },
+    {
+      "name": "run client(no gui)",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/DISClient(NoGUI)/build/DISClient",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}/DISClient(NoGUI)/build",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ],
+      "preLaunchTask": "Build Client(no gui)"
     }
   ]
 }
