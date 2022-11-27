@@ -11,7 +11,7 @@ worker_(new Worker) {
 
     this->psclient_->start(); 
 }
-
+// 用户只需实现下面这三个函数
 void DisClient::topic_init() {
     Json::Value val1, val2;
     val1["data"] = 2.0;
