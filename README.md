@@ -91,26 +91,26 @@ void PubSubServer::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestam
         string content;
         result = parseMessage(buf, &cmd, &topic, &content); // 对buf中收到的字节流进行处理
         if (result == kSuccess) { // 处理到一个满足格式要求的指令
-            if (cmd == "nodename") {
+            if (cmd == getCmdStr(NODE_NAME)) {
                 ConnectionSubscription* connSub = boost::any_cast<ConnectionSubscription>(conn->getMutableContext());
-                connSub->insert("nodename " + content);
-            } else if (cmd == "pub") {  // 如果指令是客户节点的发布指令
+                connSub->insert(getCmdStr(NODE_NAME) + " " + content);
+            } else if (cmd == getCmdStr(PUB)) {  // 如果指令是客户节点的发布指令
                 doPublish(conn->name(), topic, content, receiveTime);
             }
-            else if (cmd == "sub") { // 如果指令是客户节点的订阅指令
+            else if (cmd == getCmdStr(SUB)) { // 如果指令是客户节点的订阅指令
                 doSubscribe(conn, topic);
             }
-            else if (cmd == "unsub") { // 如果指令是客户节点的退订指令
+            else if (cmd == getCmdStr(UNSUB)) { // 如果指令是客户节点的退订指令
                 doUnsubscribe(conn, topic);
             }
-            else if (cmd == "stepover") { // 如果指令是客户节点完成一步仿真指令
+            else if (cmd == getCmdStr(STEP_OVER)) { // 如果指令是客户节点完成一步仿真指令
                 emit step_over_sig(); // 发送信号使主线程采取相应动作
             }
-            else if (cmd == "initover") {
+            else if (cmd == getCmdStr(INIT_OVER)) {
                 // todo
                 emit init_over_sig();
             }
-            else if (cmd == "synpubover") {
+            else if (cmd == getCmdStr(SYN_PUB_OVER)) {
                 emit synpub_over_sig();
             }
             else {
@@ -136,28 +136,19 @@ void PubSubClient::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestam
         string content;
         result = parseMessage(buf, &cmd, &topic, &content);
         if (result == kSuccess) {
-            if (cmd == "pub" && subscribeCallback_) {
+            if (cmd == getCmdStr(PUB) && subscribeCallback_) {
                 // pub + " " + topic + "\r\n" + content + "\r\n"
                 subscribeCallback_(topic, content, receiveTime);
             }
-            if (cmd == "step") {
+            if (cmd == getCmdStr(STEP)) {
                 // step + " " + sim_time + "\r\n"
-                emit log_msg(QString("[Info] Step cmd received!"));
-                static Json::Reader rd;
-                Json::Value sim_time_json;
-                rd.parse(content, sim_time_json);
-                stepCallback_(sim_time_json["sim_time"].asDouble());
-                send("stepover\r\n");
-                emit update_pubsub_data_sig();
+                step(content);
             }
-            if (cmd == "init") {
-                emit log_msg(QString("[Info] Init cmd received!"));
-                initCallback_();
-                send("initover\r\n");
-                emit update_pubsub_data_sig();
+            if (cmd == getCmdStr(INIT)) {
+                init(content);
             }
-            if (cmd == "synpub") {
-                emit synpub_sig();
+            if (cmd == getCmdStr(SYN_PUB)) {
+                handle_synpub();
             }
         }
         else if (result == kError) {
