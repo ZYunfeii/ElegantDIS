@@ -6,6 +6,7 @@
 #include "muduo/net/EventLoop.h"
 
 #include "jsoncpp/json/json.h"
+#include "../CMD/command.h"
 
 namespace pubsub {
 using muduo::string;

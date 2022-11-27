@@ -26,7 +26,8 @@ SOURCES += \
     hub.cpp \
     pubsubserver.cpp \
     settingwidget.cpp \
-    timer.cpp
+    timer.cpp \
+    ../CMD/command.cpp
 
 HEADERS += \
     codec.h \
@@ -34,7 +35,8 @@ HEADERS += \
     pubsubserver.h \
     settingwidget.h \
     topic.h \
-    timer.h
+    timer.h \
+    ../CMD/command.h
 
 FORMS += \
     hub.ui \

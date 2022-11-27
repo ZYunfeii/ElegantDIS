@@ -33,7 +33,7 @@ interface::interface(QWidget *parent) :
     // time lcd init
     ui->time_lcd->display("00:00:00.000");
 
-    ui->save_path->setText("./save_sim_trace/");
+    ui->save_path->setText("save_sim_trace");
     ui->save_topic->setText("Topic1");
     ui->data_name->setText("data");
 
@@ -108,8 +108,9 @@ void interface::setting_init(std::string init_setting) {
     dir_path_ = ui->save_path->text().toStdString();
     topic_save_name_ = ui->save_topic->text().toStdString();
     data_save_name_ = ui->data_name->text().toStdString();
-    std::string file_path = dir_path_ + topic_save_name_ + '-' + data_save_name_;
-    pf_ = fopen(file_path.data(), "w+");
+    std::string file_path = dir_path_ + "/" + topic_save_name_ + "-" + data_save_name_;
+    mkdir(dir_path_.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH); // https://www.cnblogs.com/xiaofeiIDO/p/6695459.html
+    pf_ = fopen(file_path.c_str(), "w+");
 }
 
 void interface::save_sim_trace(std::vector<Json::Value> val_save_vec) {
@@ -129,7 +130,7 @@ void interface::save() {
     Json::Value val_save = subscribe_topic_json_map_[topic_save_name_][data_save_name_];
     save_cache_.push_back(val_save);
     if (save_cache_.size() >= save_cache_max_size_ || cur_sim_steps_ >= max_sim_steps_) {
-        thread_pool_->AddTask(std::bind(&interface::save_sim_trace, this, save_cache_)); // 将IO任务扔进线程池
+        thread_pool_->addTask(std::bind(&interface::save_sim_trace, this, save_cache_)); // 将IO任务扔进线程池
         save_cache_.clear();
     }
 }
@@ -197,9 +198,8 @@ void interface::handle_topic_update(QVariant topic_name, QVariant topic_data) {
     
 
     if (++syn_topic_count_ == subscribe_topic_json_map_.size()) {  // 当所有订阅的话题都被更新后向管理节点发布同步完成指令
-        std::string cmd = "synpubover\r\n";
         syn_topic_count_ = 0;
-        pubsubclient_->send(cmd);
+        pubsubclient_->send(makeSendCmd(SYN_PUB_OVER));
     }
 }
 

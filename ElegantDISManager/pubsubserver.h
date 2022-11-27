@@ -13,6 +13,7 @@
 
 #include "codec.h"
 #include "topic.h"
+#include "../CMD/command.h"
 
 using namespace muduo;
 using namespace muduo::net;

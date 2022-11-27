@@ -13,7 +13,7 @@ void PubSubClient::connection(PubSubClient *client) {
         if (subscribe_topics_.empty()) {
             emit log_msg(QString("[Warning]: There is no subscribed topics initialized!"));
         }
-        send("nodename " + this->client_->name() + "\r\n");
+        send(makeSendCmd(NODE_NAME, this->client_->name()));
         for (std::vector<string>::iterator it = subscribe_topics_.begin(); it != subscribe_topics_.end(); ++it) {
             client->subscribe(*it, std::bind(&PubSubClient::subscription,this, _1, _2, _3));
         }
@@ -48,21 +48,17 @@ bool PubSubClient::connected() const {
 }
 
 bool PubSubClient::subscribe(const string& topic, const SubscribeCallback& cb) {
-    string message = "sub " + topic + "\r\n";
     subscribeCallback_ = cb;
-    return send(message);
+    return send(makeSendCmd(SUB, topic));
 }
 
-void PubSubClient::unsubscribe(const string& topic)
-{
-    string message = "unsub " + topic + "\r\n";
-    send(message);
+void PubSubClient::unsubscribe(const string& topic) {  
+    send(makeSendCmd(UNSUB, topic));
 }
 
 
 bool PubSubClient::publish(const string& topic, const string& content) {
-    string message = "pub " + topic + "\r\n" + content + "\r\n";
-    return send(message);
+    return send(makeSendCmd(PUB, topic, content));
 }
 
 void PubSubClient::onConnection(const TcpConnectionPtr& conn) {
@@ -87,28 +83,28 @@ void PubSubClient::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestam
         string content;
         result = parseMessage(buf, &cmd, &topic, &content);
         if (result == kSuccess) {
-            if (cmd == "pub" && subscribeCallback_) {
+            if (cmd == getCmdStr(PUB) && subscribeCallback_) {
                 // pub + " " + topic + "\r\n" + content + "\r\n"
                 subscribeCallback_(topic, content, receiveTime);
             }
-            if (cmd == "step") {
+            if (cmd == getCmdStr(STEP)) {
                 // step + " " + sim_time + "\r\n"
                 emit log_msg(QString("[Info] Step cmd received!"));
                 static Json::Reader rd;
                 Json::Value sim_time_json;
                 rd.parse(content, sim_time_json);
                 stepCallback_(sim_time_json["sim_time"].asDouble());
-                send("stepover\r\n");
+                send(makeSendCmd(STEP_OVER));
                 emit update_pubsub_data_sig();
             }
-            if (cmd == "init") {
+            if (cmd == getCmdStr(INIT)) {
                 emit log_msg(QString("[Info] Init cmd received!"));
                 emit init_msg(QString::fromStdString(content));
                 initCallback_(content);
-                send("initover\r\n");
+                send(makeSendCmd(INIT_OVER));
                 emit update_pubsub_data_sig();
             }
-            if (cmd == "synpub") {
+            if (cmd == getCmdStr(SYN_PUB)) {
                 emit synpub_sig();
             }
         }

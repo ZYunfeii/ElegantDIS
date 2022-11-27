@@ -1,70 +1,74 @@
-#ifndef THREADPOOL_H
-#define THREADPOOL_H
+/*
+ * @Author       : Y. F. Zhang
+ * @Date         : 2022-11-09
+ * @copyleft Apache 2.0
+ */ 
 
-#include <mutex>
-#include <condition_variable>
-#include <queue>
+#ifndef THREADPOOLV2_H
+#define THREADPOOLV2_H
+
 #include <thread>
+#include <mutex>
+#include <queue>
 #include <functional>
-#include <assert.h>
+#include <condition_variable>
+#include <atomic>
+
 class ThreadPool {
-public:
-    explicit ThreadPool(size_t threadCount = 8): pool_(std::make_shared<Pool>()) {
-            assert(threadCount > 0);
-            for(size_t i = 0; i < threadCount; i++) {
-                std::thread([pool = pool_] {
-                    std::unique_lock<std::mutex> locker(pool->mtx); // 会对mtx加锁 mtx是线程池唯一的一把🔓
-                    while(true) {
-                        if(!pool->tasks.empty()) {
-                            auto task = std::move(pool->tasks.front());
-                            pool->tasks.pop();
-                            locker.unlock();
-                            task(); // 执行任务
-                            locker.lock();
-                        } 
-                        else if(pool->isClosed) break;
-                        else pool->cond.wait(locker); // 真正开始wait后才解锁locker,被唤醒后加锁以保护共享数据 每个任务只会有一个线程被唤醒执行 正常情况一开始都在这wait起
-                    }
-                }).detach(); // 主线程和子线程相互分离，互不干扰
-            }
-    }
-
-    ThreadPool() = default; // 构造默认
-
-    ThreadPool(ThreadPool&&) = default; // 移动构造默认
-    
-    ~ThreadPool() {
-        if(static_cast<bool>(pool_)) {
-            {
-                std::lock_guard<std::mutex> locker(pool_->mtx); 
-                pool_->isClosed = true;
-            }
-            pool_->cond.notify_all(); // 唤醒所有阻塞的线程 存在锁竞争 只有一个线程能够获得锁 剩余的线程阻塞 等待解锁后再次竞争出一个线程 持续下去 最后所有wait的线程全部唤醒
-        }
-    }
-
-    template<class F>
-    void AddTask(F&& task) {  // 完美转发
-        {   // 括号一定要有 划定作用域
-            std::lock_guard<std::mutex> locker(pool_->mtx);
-            pool_->tasks.emplace(std::forward<F>(task)); // 完美转发
-        }
-        pool_->cond.notify_one(); // 生产者 唤醒一个线程处理 不存在锁竞争
-    }
-
-    int getTaskSizeInPool() {
-        return pool_->tasks.size();
-    }
-
 private:
     struct Pool {
-        std::mutex mtx;
-        std::condition_variable cond;
-        bool isClosed;
-        std::queue<std::function<void()>> tasks;
+        std::queue<std::function<void()>> tasks_;
+        std::mutex mtx_;
+        std::condition_variable cond_;
+        std::atomic<bool> isClosed_;
+        std::atomic<int> doTaskNum_;
     };
     std::shared_ptr<Pool> pool_;
+public:
+    explicit ThreadPool(int threadNum) : pool_(std::make_shared<Pool>()) {
+        for (int i = 0; i < threadNum; ++i) {
+            std::thread(
+                [pool = pool_] () {
+                    while (true) { 
+                        if (pool->isClosed_.load()) break;
+                        std::unique_lock<std::mutex> lk(pool->mtx_);
+                        // The consumer implemented by conditional variable uses "while" instead of "if" to prevent false wake-up
+                        while (pool->tasks_.empty()) { 
+                            pool->cond_.wait(lk);
+                        }
+                        auto task = std::move(pool->tasks_.front());
+                        pool->tasks_.pop();
+                        lk.unlock(); // before excute task, unlock to allow other threads waken
+                        pool->doTaskNum_.fetch_add(1);
+                        task();
+                        pool->doTaskNum_.fetch_sub(1);
+                    }
+                }
+            ).detach();
+        }
+    }
+
+    ~ThreadPool() {
+        shutdown();
+    }
+
+    void shutdown() {
+        pool_->isClosed_.store(true);
+        pool_->cond_.notify_all();
+    }
+    
+    template<class F> // 完美转发需要用模板
+    void addTask(F&& t) {
+        {
+            std::unique_lock<std::mutex> lk(pool_->mtx_);
+            pool_->tasks_.push(std::forward<F>(t));
+        }
+        pool_->cond_.notify_one();
+    }
+
+    int getDoTaskThreadNum() {
+        return pool_->doTaskNum_.load();
+    }
 };
 
-
-#endif //THREADPOOL_H
+#endif

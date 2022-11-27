@@ -24,13 +24,15 @@ SOURCES += \
     codec.cpp \
     interface.cpp \
     main.cpp \
-    pubsub.cpp
+    pubsub.cpp \
+    ../CMD/command.cpp
 
 HEADERS += \
     codec.h \
     interface.h \
     pubsub.h \
-    threadpool.h
+    threadpool.h \
+    ../CMD/command.h
 
 FORMS += \
     interface.ui

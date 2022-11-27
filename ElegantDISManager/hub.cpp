@@ -75,8 +75,7 @@ void Hub::init_cmd() {
         return;
     }
     for (auto it = pubsubserver_->server_->connections_.begin(); it != pubsubserver_->server_->connections_.end(); it++){
-        std::string cmd = "init " + make_init_info_json() + "\r\n";
-        it->second->send(cmd);
+        it->second->send(makeSendCmd(INIT, make_init_info_json()));
     }
     hub_state_ = INITOVER; // init the flag 
 }
@@ -128,8 +127,7 @@ void Hub::step_cmd(){
         Json::Value sim_time_value;
         sim_time_value["sim_time"] = timer_->elapsed_time();  
         std::string sim_time_json = w.write(sim_time_value);      
-        std::string cmd = "step "  + sim_time_json + "\r\n";
-        it->second->send(cmd);
+        it->second->send(makeSendCmd(STEP, sim_time_json));
     }
     handle_sim_msg(QString("[Info]:Current Steps:%1").arg(total_sim_steps_));
     ui->cur_step_show->setText(QString::number(total_sim_steps_));
@@ -143,8 +141,7 @@ void Hub::handle_step_sig() {
     node_step_over_count_++;
     if (node_step_over_count_ == pubsubserver_->server_->connections_.size()) { // 说明所有节点完成一步仿真
         for (auto it = pubsubserver_->server_->connections_.begin(); it != pubsubserver_->server_->connections_.end(); it++){
-            std::string cmd = "synpub\r\n";
-            it->second->send(cmd);
+            it->second->send(makeSendCmd(SYN_PUB));
         }
     }
 }
