@@ -16,18 +16,30 @@
 
 ## 仿真节点（客户节点）
 
+## GUI界面版本
+
 1. 填入管理节点IP和Port后向管理节点进行连接；
 2. 日志显示栏显示日志信息；
 3. 保存仿真话题随时间变化数据功能；
 
 ![在这里插入图片描述](README.assets/89326c5f108149988a9e75ad77db364f.png)
 
+## 非GUI版本
+
+实现了非GUI界面的客户节点（最小实现），在文件夹DISClientNoGUI下，不依赖QT。
+
+编译： `cd build` `cmake ..` `make`
+
+运行：`./DISClient`
+
+![image-20221127154417489](./README.assets/image-20221127154417489.png)
+
 # 项目配置
 
 项目依赖:
 
 1. Muduo网络库：https://github.com/chenshuo/muduo 
-2. QT5
+2. QT5（管理节点和GUI版本的客户节点需要）
 3. Jsoncpp
 
 **Muduo库在编译前将net/TcpServer中的connections_改为public。**
@@ -45,11 +57,9 @@ make debug
 
 完成编译。build目录下执行二进制文件即可。
 
-## IDE编译
+## vscode一键编译
 
-IDE采用vscode，用qtcreator也可以。
-
-若用vscode，打开项目下的ElegantDISManager或者ElegantDISClient后配置 .vscode目录下的json（正常来说不需要修改），之后用vscode gdb模式编译运行即可。
+根据项目根目录下 `.vscode`配置运行即可。
 
 # 项目原理
 
