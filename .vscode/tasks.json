@@ -17,7 +17,7 @@
             "label": "Build Client(no gui)",                              // build任务
             "type": "shell",
             // "command": "make -f Makefile"
-            "command" : "cd ./DISClient(NoGUI)/build && cmake .. && make"
+            "command" : "cd ./DISClientNoGUI/build && cmake .. && make"
         }
     ]
 }
