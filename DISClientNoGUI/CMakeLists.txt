@@ -33,5 +33,5 @@ pubsub.cpp
 
 add_executable(DISClient ${SRC_LIST})
 
-target_link_libraries(DISClient muduo_net muduo_base pthread jsoncpp) # 有顺序要求
+target_link_libraries(DISClient muduo_net muduo_base pthread jsoncpp gflags) # 有顺序要求
 

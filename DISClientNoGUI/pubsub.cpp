@@ -1,8 +1,11 @@
 #include "../ElegantDISClient/codec.h"
 #include "pubsub.h"
 
-
 using namespace pubsub;
+
+DECLARE_string(log_path);
+DECLARE_string(log_suffix);
+DECLARE_int32(log_level);
 
 void PubSubClient::subscription(const string& topic, const string& content, Timestamp) {
     log(INFO, "topic update " + topic + "->" + content); 
@@ -28,7 +31,7 @@ PubSubClient::PubSubClient(std::string node_name, std::string ip, uint16_t port)
     port_ = port;     
     node_name_ = node_name;
     syn_topic_count_ = 0;
-    Log::Instance()->init(1, "./log", ".log", 1024);
+    Log::Instance()->init(FLAGS_log_level, FLAGS_log_path.data(), FLAGS_log_suffix.data(), 1024);
 }
 
 void PubSubClient::start() {
@@ -71,6 +74,7 @@ void PubSubClient::onConnection(const TcpConnectionPtr& conn) {
         // FIXME: re-sub
         log(INFO, "connected!");
         LOG_INFO("connented successfully to admin.")
+        LOG_INFO("the admin ip:port is %s", conn->peerAddress().toIpPort().data());
     }
     else {
         conn_.reset();

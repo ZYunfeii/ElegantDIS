@@ -3,6 +3,7 @@
 
 #include "pubsub.h"
 #include "worker.h"
+#include "gflags/gflags.h"
 #include <string>
 
 class DisClient {

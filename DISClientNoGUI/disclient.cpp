@@ -1,7 +1,10 @@
 #include "disclient.h"
+DECLARE_string(ip);
+DECLARE_int32(port);
+DECLARE_string(test_node);
 
 DisClient::DisClient() :
-psclient_(new pubsub::PubSubClient("testnode", "127.0.0.1", 9999)),
+psclient_(new pubsub::PubSubClient(FLAGS_test_node, FLAGS_ip, FLAGS_port)),
 worker_(new Worker) {
     worker_->set_dir_path("save_res");
     worker_->set_save_name("Topic1", "data");

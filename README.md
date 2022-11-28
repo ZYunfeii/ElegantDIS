@@ -28,9 +28,9 @@
 
 实现了非GUI界面的客户节点（最小实现），在文件夹DISClientNoGUI下，不依赖QT。
 
-编译： `cd build` `cmake ..` `make`
+编译：1. `cd build` `cmake ..`  2. `make` 3.  `cd ..`
 
-运行：`./DISClient`
+运行：`./build/DISClient --flagfile config.flags` （使用gflags配置参数，更改.flags文件即可改变配置）
 
 ![image-20221127154417489](./README.assets/image-20221127154417489.png)
 
@@ -38,9 +38,11 @@
 
 项目依赖:
 
-1. Muduo网络库：https://github.com/chenshuo/muduo 
+1. muduo_base, muduo_net (Muduo网络库：https://github.com/chenshuo/muduo )
 2. QT5（管理节点和GUI版本的客户节点需要）
 3. Jsoncpp
+4. pthread
+5. gflags
 
 **Muduo库在编译前将net/TcpServer中的connections_改为public。**
 

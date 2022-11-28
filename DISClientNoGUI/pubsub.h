@@ -7,6 +7,7 @@
 #include "jsoncpp/json/json.h"
 #include "../CMD/command.h"
 #include "../logger/log.h"
+#include "gflags/gflags.h"
 #include <iostream>
 
 namespace pubsub {
