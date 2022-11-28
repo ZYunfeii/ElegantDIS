@@ -1,3 +1,5 @@
 /DISClientNoGUI/build/*
+/DISClientNoGUI/log/*
 /ElegantDISClient/build/*
 /ElegantDISManager/build/*
+/.VSCodeCounter

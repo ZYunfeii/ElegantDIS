@@ -6,6 +6,7 @@
 
 #include "jsoncpp/json/json.h"
 #include "../CMD/command.h"
+#include "../logger/log.h"
 #include <iostream>
 
 namespace pubsub {

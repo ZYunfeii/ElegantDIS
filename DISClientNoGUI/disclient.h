@@ -9,6 +9,7 @@ class DisClient {
 public:
     DisClient();
     ~DisClient();
+    void connect();
 
 private:
     pubsub::PubSubClient* psclient_;

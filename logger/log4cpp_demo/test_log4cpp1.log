@@ -1,0 +1,8 @@
+1669622122 ALERT mywarn : Alert info
+1669622122 WARN mywarn : This will be a logged warning
+1669622122 CRIT mywarn : Importance depends on context
+1669622122 CRIT mywarn : This will show up << as 1 critical message300
+2022-11-28 16:08:36,732: ALERT mywarn : Alert info
+2022-11-28 16:08:36,732: WARN mywarn : This will be a logged warning
+2022-11-28 16:08:36,732: CRIT mywarn : Importance depends on context
+2022-11-28 16:08:36,732: CRIT mywarn : This will show up << as 1 critical message300

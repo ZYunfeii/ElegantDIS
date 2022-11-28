@@ -7,10 +7,13 @@ worker_(new Worker) {
     worker_->set_save_name("Topic1", "data");
     topic_init();
     psclient_->setStepCallback(std::bind(&DisClient::step_func, this, std::placeholders::_1));
-    psclient_->setInitCallback(std::bind(&DisClient::init_func, this, std::placeholders::_1)); // set the init callback for simnode
+    psclient_->setInitCallback(std::bind(&DisClient::init_func, this, std::placeholders::_1)); // set the init callback for simnode    
+}
 
+void DisClient::connect() {
     this->psclient_->start(); 
 }
+
 // 用户只需实现下面这三个函数
 void DisClient::topic_init() {
     Json::Value val1, val2;

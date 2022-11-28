@@ -6,6 +6,7 @@ using namespace pubsub;
 
 void PubSubClient::subscription(const string& topic, const string& content, Timestamp) {
     log(INFO, "topic update " + topic + "->" + content); 
+    LOG_INFO("topic update %s -> %s", topic.data(), content.data());
     handle_topic_update(topic, content);
 }
 
@@ -13,6 +14,7 @@ void PubSubClient::connection(PubSubClient *client) {
     if (client->connected()) {
         if (subscribe_topic_json_map_.empty()) {
             log(WARN, "There is no subscribed topics initialized!");
+            LOG_WARN("There is no subscribed topics initialized!");
         }
         send(makeSendCmd(NODE_NAME, this->client_->name()));
         for (auto it = subscribe_topic_json_map_.begin(); it != subscribe_topic_json_map_.end(); ++it) {
@@ -26,6 +28,7 @@ PubSubClient::PubSubClient(std::string node_name, std::string ip, uint16_t port)
     port_ = port;     
     node_name_ = node_name;
     syn_topic_count_ = 0;
+    Log::Instance()->init(1, "./log", ".log", 1024);
 }
 
 void PubSubClient::start() {
@@ -67,6 +70,7 @@ void PubSubClient::onConnection(const TcpConnectionPtr& conn) {
         conn_ = conn;
         // FIXME: re-sub
         log(INFO, "connected!");
+        LOG_INFO("connented successfully to admin.")
     }
     else {
         conn_.reset();
@@ -76,7 +80,7 @@ void PubSubClient::onConnection(const TcpConnectionPtr& conn) {
     }
 }
 
-void PubSubClient::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestamp receiveTime) {
+void PubSubClient::onMessage(const TcpConnectionPtr& conn, muduo::net::Buffer* buf, Timestamp receiveTime) {
     ParseResult result = kSuccess;
     while (result == kSuccess) {
         string cmd;
@@ -121,15 +125,14 @@ void PubSubClient::step(std::string& content) {
     rd.parse(content, sim_time_json);
     stepCallback_(sim_time_json["sim_time"].asDouble());
     send(makeSendCmd(STEP_OVER));
-    // emit update_pubsub_data_sig();
 }
 
 void PubSubClient::init(std::string& content) {
     log(INFO, "init cmd received!");
-    // emit init_msg(QString::fromStdString(content));
+    log(INFO, content);
+    LOG_INFO("init cmd received: %s", content.data());
     initCallback_(content);
     send(makeSendCmd(INIT_OVER));
-    // emit update_pubsub_data_sig();
 }
 
 void PubSubClient::handle_topic_update(const std::string& topic_name, const std::string& topic_data) {
