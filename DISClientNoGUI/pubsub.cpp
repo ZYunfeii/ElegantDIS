@@ -8,19 +8,19 @@ DECLARE_string(log_suffix);
 DECLARE_int32(log_level);
 
 void PubSubClient::subscription(const string& topic, const string& content, Timestamp) {
-    log(INFO, "topic update " + topic + "->" + content); 
-    LOG_INFO("topic update %s -> %s", topic.data(), content.data());
+    log(INFO, topic + "update."); 
+    LOG_INFO("%s update.", topic.data());
     handle_topic_update(topic, content);
 }
 
 void PubSubClient::connection(PubSubClient *client) {
     if (client->connected()) {
-        if (subscribe_topic_json_map_.empty()) {
+        if (subscribe_topic_proto_map_.empty()) {
             log(WARN, "There is no subscribed topics initialized!");
             LOG_WARN("There is no subscribed topics initialized!");
         }
         send(makeSendCmd(NODE_NAME, this->client_->name()));
-        for (auto it = subscribe_topic_json_map_.begin(); it != subscribe_topic_json_map_.end(); ++it) {
+        for (auto it = subscribe_topic_proto_map_.begin(); it != subscribe_topic_proto_map_.end(); ++it) {
             client->subscribe(it->first, std::bind(&PubSubClient::subscription,this, _1, _2, _3));
         }
     }
@@ -140,36 +140,35 @@ void PubSubClient::init(std::string& content) {
 }
 
 void PubSubClient::handle_topic_update(const std::string& topic_name, const std::string& topic_data) {
-    Json::Reader rd;
-    Json::Value val_sub;
-    rd.parse(topic_data, val_sub);
-    subscribe_topic_json_map_[topic_name] = val_sub;
-    if (++syn_topic_count_ == subscribe_topic_json_map_.size()) {  // 当所有订阅的话题都被更新后向管理节点发布同步完成指令
+    if (!subscribe_topic_proto_map_[topic_name]->ParseFromString(topic_data)) {
+        LOG_WARN("parse topic %s error!", topic_name.data());
+    }
+    if (++syn_topic_count_ == subscribe_topic_proto_map_.size()) {  // 当所有订阅的话题都被更新后向管理节点发布同步完成指令
         syn_topic_count_ = 0;
         send(makeSendCmd(SYN_PUB_OVER));
     }
 }
 
 void PubSubClient::handle_synpub() {
-    Json::FastWriter w;
-    for(auto it = publish_topic_json_map_.begin(); it != publish_topic_json_map_.end(); ++it) {
-        std::string json = w.write(it->second);
-        publish(it->first, json);
+    std::string tmp;
+    for(auto it = publish_topic_proto_map_.begin(); it != publish_topic_proto_map_.end(); ++it) {
+        it->second->SerializeToString(&tmp);
+        publish(it->first, tmp);
     }
 }
 
-void PubSubClient::setPubTopic(const std::string& topic, Json::Value& val) {
-    publish_topic_json_map_[topic] = val;
+void PubSubClient::setPubTopic(const std::string& topic, std::shared_ptr<google::protobuf::Message> msg) {
+    publish_topic_proto_map_[topic] = msg;
 }
 
-void PubSubClient::setSubTopic(const std::string& topic, Json::Value& val) {
-    subscribe_topic_json_map_[topic] = val;
+void PubSubClient::setSubTopic(const std::string& topic, std::shared_ptr<google::protobuf::Message> msg) {
+    subscribe_topic_proto_map_[topic] = msg;
 }
 
-Json::Value& PubSubClient::getPubTopic(const std::string& topic, const std::string& data) {
-    return publish_topic_json_map_[topic][data];
+std::shared_ptr<google::protobuf::Message> PubSubClient::getPubTopic(const std::string& topic) {
+    return publish_topic_proto_map_[topic];
 }
 
-Json::Value& PubSubClient::getSubTopic(const std::string& topic, const std::string& data) {
-    return subscribe_topic_json_map_[topic][data];
+std::shared_ptr<google::protobuf::Message> PubSubClient::getSubTopic(const std::string& topic) {
+    return subscribe_topic_proto_map_[topic];
 }

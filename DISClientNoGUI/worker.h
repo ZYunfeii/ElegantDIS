@@ -50,6 +50,7 @@ public:
         cur_sim_steps_++;
     }
     void setting_init(std::string& init_setting) {
+        cur_sim_steps_ = 0;
         Json::Reader rd;
         Json::Value init_val;
         rd.parse(init_setting, init_val);
@@ -64,22 +65,18 @@ public:
             pf_ = fopen(file_path.c_str(), "w+");
         }
     }
-    void save(Json::Value& val_save) {
+    void save(double val_save) {
         save_cache_.push_back(val_save);
         if (save_cache_.size() >= save_cache_max_size_ || cur_sim_steps_ >= max_sim_steps_) {
             thread_pool_->addTask(std::bind(&Worker::save_sim_trace, this, save_cache_)); // 将IO任务扔进线程池
             save_cache_.clear();
         }
     }
-    void save_sim_trace(std::vector<Json::Value>& val_save_vec) {
+    void save_sim_trace(std::vector<double>& val_save_vec) {
         for (auto &val_save : val_save_vec) {
-            if (val_save.isDouble()) {
-                char buf[256];
-                sprintf(buf, "%.3lf\r\n", val_save.asDouble());
-                fputs(buf, pf_);
-            } else if (val_save.isString()) {
-                fputs((val_save.asString() + "\r\n").data(), pf_);
-            }
+            char buf[256];
+            sprintf(buf, "%.3lf\r\n", val_save);
+            fputs(buf, pf_);
         }
         fflush(pf_);
     }
@@ -92,7 +89,7 @@ private:
     std::string dir_path_;
     std::string topic_save_name_;
     std::string data_save_name_;
-    std::vector<Json::Value> save_cache_;
+    std::vector<double> save_cache_;
     std::unique_ptr<ThreadPool> thread_pool_;
 };
 

@@ -8,7 +8,7 @@ endif()
 
 set(CXX_FLAGS
 -g
--std=c++11)
+-std=c++17)
 
 if(CMAKE_BUILD_BITS EQUAL 32)
   list(APPEND CXX_FLAGS "-m32")
@@ -29,9 +29,10 @@ pubsub.cpp
 ../ElegantDISClient/codec.cpp
 ../logger/buffer.cpp
 ../logger/log.cpp
+../proto/transdata.pb.cc
 )
 
 add_executable(DISClient ${SRC_LIST})
 
-target_link_libraries(DISClient muduo_net muduo_base pthread jsoncpp gflags) # 有顺序要求
+target_link_libraries(DISClient muduo_net muduo_base pthread jsoncpp gflags protobuf) # 有顺序要求
 

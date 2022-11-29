@@ -5,6 +5,7 @@
 #include "worker.h"
 #include "gflags/gflags.h"
 #include <string>
+#include <unordered_map>
 
 class DisClient {
 public:
@@ -15,9 +16,9 @@ public:
 private:
     pubsub::PubSubClient* psclient_;
     Worker* worker_;
-    void topic_init();
     void init_func(std::string init_setting);
     void step_func(double sim_time);
+    void topic_init();
 };
 
 #endif

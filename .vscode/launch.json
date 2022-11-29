@@ -60,6 +60,6 @@
         }
       ],
       "preLaunchTask": "Build Client(no gui)"
-    }
+    },
   ]
 }
