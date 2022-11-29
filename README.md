@@ -21,12 +21,14 @@
 1. 填入管理节点IP和Port后向管理节点进行连接；
 2. 日志显示栏显示日志信息；
 3. 保存仿真话题随时间变化数据功能；
+4. 消息传递基于Json；
 
 ![在这里插入图片描述](README.assets/89326c5f108149988a9e75ad77db364f.png)
 
 ## 非GUI版本
 
 实现了非GUI界面的客户节点（最小实现），在文件夹DISClientNoGUI下，不依赖QT。同时，对数据的传输采用protobuf3序列化，优化了一些代码结果。
+proto文件生成：在proto/src文件夹下执行`protoc -I . --cpp_out=.. transdata.proto`
 
 编译：1. `cd build` `cmake ..`  2. `make` 3.  `cd ..`
 
@@ -49,15 +51,20 @@
 
 测试系统：Ubuntu18.04
 
-## qmake编译
-
+## qmake
+**可使用qmake编译管理节点和GUI版本客户节点**
 进入ElegantDISManager或者ElegantDISClient下build文件夹，执行：
 
 ```shell
 qmake .. 
 make debug
 ```
-
+**可使用cmake编译非GUI版本客户节点**
+在build文件夹下执行：
+```shell
+cmake .. 
+make
+```
 完成编译。build目录下执行二进制文件即可。
 
 ## vscode一键编译
