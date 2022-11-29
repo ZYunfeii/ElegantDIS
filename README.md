@@ -26,7 +26,7 @@
 
 ## 非GUI版本
 
-实现了非GUI界面的客户节点（最小实现），在文件夹DISClientNoGUI下，不依赖QT。
+实现了非GUI界面的客户节点（最小实现），在文件夹DISClientNoGUI下，不依赖QT。同时，对数据的传输采用protobuf3序列化，优化了一些代码结果。
 
 编译：1. `cd build` `cmake ..`  2. `make` 3.  `cd ..`
 
@@ -43,6 +43,7 @@
 3. Jsoncpp
 4. pthread
 5. gflags
+6. protobuf3 (非GUI版本客户节点采用)
 
 **Muduo库在编译前将net/TcpServer中的connections_改为public。**
 
