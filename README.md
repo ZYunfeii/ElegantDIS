@@ -2,6 +2,10 @@
 
 本项目基于Muduo网络库实现Linux下分布式仿真系统。之后会持续更新，目前完成了一些分布式仿真的基本功能。
 
+# 项目框架
+
+![structure](./README.assets/structure.jpg)
+
 # 项目效果展示
 
 ![](./README.assets/DIS2.gif)
