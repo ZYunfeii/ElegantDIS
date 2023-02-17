@@ -3,6 +3,7 @@ using namespace pubsub;
 
 PubSubServer::PubSubServer(){
     qRegisterMetaType<QVariant>("QVariant");
+    Log::Instance()->init(1, "./log", ".log", 1024);
 }
 
 void PubSubServer::start() {
@@ -30,7 +31,7 @@ void PubSubServer::onConnection(const TcpConnectionPtr& conn) {
     }
 }
 
-void PubSubServer::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestamp receiveTime) {
+void PubSubServer::onMessage(const TcpConnectionPtr& conn, muduo::net::Buffer* buf, Timestamp receiveTime) {
     ParseResult result = kSuccess;
     while (result == kSuccess) { 
         string cmd;
@@ -81,11 +82,12 @@ void PubSubServer::doSubscribe(const TcpConnectionPtr& conn, const string& topic
     connSub->insert(topic);
     getTopic(topic).add(conn);
     emit log_msg(QString::fromStdString("[Sub]:" + conn->name() + "->" + topic));
+    LOG_INFO("Sub: %s -> %s", conn->name(), topic);
     emit update_topic_sig();
 }
 
 void PubSubServer::doUnsubscribe(const TcpConnectionPtr& conn, const string& topic) {
-    LOG_INFO << conn->name() << " unsubscribes " << topic;
+    LOG_INFO("%s unsubscribes %s.", conn->name(), topic);
     getTopic(topic).remove(conn);
     // topic could be the one to be destroyed, so don't use it after erasing.
     ConnectionSubscription* connSub = boost::any_cast<ConnectionSubscription>(conn->getMutableContext());
@@ -101,6 +103,7 @@ void PubSubServer::doUnsubscribe(const TcpConnectionPtr& conn, const string& top
 void PubSubServer::doPublish(const string& source, const string& topic, const string& content,Timestamp time) {
     getTopic(topic).publish(content, time);
     emit log_msg(QString::fromStdString("[Pub]:" + source + "->" + topic + ":" + content));
+    LOG_INFO("pub: %s -> %s: %s", source, topic, content);
 }
 
 Topic &PubSubServer::getTopic(const string& topic) {

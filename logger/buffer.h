@@ -13,6 +13,7 @@
 #include <vector> //readv
 #include <atomic>
 #include <assert.h>
+namespace cache {
 class Buffer {
 public:
     Buffer(int initBuffSize = 1024);
@@ -55,5 +56,6 @@ private:
     std::atomic<std::size_t> readPos_;
     std::atomic<std::size_t> writePos_;
 };
+}
 
 #endif //BUFFER_H

@@ -54,7 +54,7 @@ private:
 
     bool isOpen_;
  
-    Buffer buff_;
+    cache::Buffer buff_;
     int level_;
     bool isAsync_;
 

@@ -4,7 +4,7 @@
  * @copyleft Apache 2.0
  */ 
 #include "buffer.h"
-
+using namespace cache;
 Buffer::Buffer(int initBuffSize) : buffer_(initBuffSize), readPos_(0), writePos_(0) {}
 
 size_t Buffer::ReadableBytes() const {

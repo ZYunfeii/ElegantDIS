@@ -14,6 +14,7 @@
 #include "codec.h"
 #include "topic.h"
 #include "../CMD/command.h"
+#include "../logger/log.h"
 
 using namespace muduo;
 using namespace muduo::net;
@@ -37,7 +38,7 @@ public slots:
 
 private:
     void onConnection(const TcpConnectionPtr& conn);
-    void onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestamp receiveTime);
+    void onMessage(const TcpConnectionPtr& conn, muduo::net::Buffer* buf, Timestamp receiveTime);
     void timePublish();
     void doSubscribe(const TcpConnectionPtr& conn, const string& topic);
     void doUnsubscribe(const TcpConnectionPtr& conn, const string& topic);
